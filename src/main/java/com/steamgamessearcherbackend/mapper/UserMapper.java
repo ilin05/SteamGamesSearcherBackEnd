@@ -40,4 +40,7 @@ public interface UserMapper {
     @Delete("delete from users where email=#{email}")
     public int deleteUser(String email);
 
+    // 存储游戏数据
+    @Insert("insert into games(app_id, title, released_date, win, mac, linux, price, tags, support_language, website, header_image, recommendations, positive, negative, estimated_owners, screenshots, description) values (#{appId}, #{title}, #{releaseDate}, #{winSupport}, #{macSupport}, #{linuxSupport}, #{price}, #{tags}, #{supportLanguage}, #{website}, #{headerImage}, #{recommendations}, #{positive}, #{negative}, #{estimatedOwners}, #{screenshots}, #{description})")
+    public int storeGame(Game game);
 }

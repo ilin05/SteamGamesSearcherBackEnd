@@ -13,13 +13,20 @@ create table users (
 create table games (
     app_id INT PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
-    date_released DATE,
+    released_date VARCHAR(50),
     win BOOLEAN,
     mac BOOLEAN,
     linux BOOLEAN,
     price DECIMAL(10, 2),
-    rating VARCHAR(50),
-    tags VARCHAR(255),
+    tags TEXT,
+    support_language TEXT,
+    website VARCHAR(255),
+    header_image VARCHAR(255),
+    recommendations INT,
+    positive INT,
+    negative INT,
+    estimated_owners INT,
+    screenshots TEXT,
     description TEXT
 );
 

@@ -1,16 +1,24 @@
 package com.steamgamessearcherbackend.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.steamgamessearcherbackend.mapper.UserMapper;
 import com.steamgamessearcherbackend.service.*;
 import com.steamgamessearcherbackend.entities.*;
 import com.steamgamessearcherbackend.utils.ApiResult;
+import org.springframework.boot.autoconfigure.batch.BatchProperties;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+// import java.util.Map;
+import java.util.Iterator;
+import java.util.Map.Entry;
 
 @Service
 public class UserServiceImpl implements UserService{
