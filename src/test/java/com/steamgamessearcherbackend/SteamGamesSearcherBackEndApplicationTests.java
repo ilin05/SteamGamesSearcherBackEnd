@@ -6,6 +6,7 @@ import com.steamgamessearcherbackend.entities.Game;
 import com.steamgamessearcherbackend.entities.User;
 import com.steamgamessearcherbackend.mapper.UserMapper;
 import com.steamgamessearcherbackend.repository.GameRepository;
+import com.steamgamessearcherbackend.service.ElasticSearchService;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,18 @@ class SteamGamesSearcherBackEndApplicationTests {
     private UserMapper userMapper;
     @Autowired
     private GameRepository gameRepository;
+    @Autowired
+    private ElasticSearchService elasticSearchService;
+
+    @Test
+    void testSearchByTitle() throws IOException {
+        String query = "Fortix 2";
+        List<Game> games = elasticSearchService.searchGames(query);
+        System.out.println("共查询到" + games.size() + "个结果");
+        for(Game game : games){
+            System.out.println(game);
+        }
+    }
 
     @Test
     void contextLoads() {
