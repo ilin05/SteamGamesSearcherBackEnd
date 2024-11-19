@@ -24,9 +24,11 @@ import java.util.Map.Entry;
 public class UserServiceImpl implements UserService{
 
     private final UserMapper userMapper;
+    private final ElasticSearchService elasticSearchService;
 
-    public UserServiceImpl(UserMapper userMapper) {
+    public UserServiceImpl(UserMapper userMapper, ElasticSearchService elasticSearchService) {
         this.userMapper = userMapper;
+        this.elasticSearchService = elasticSearchService;
     }
 
     @Override
@@ -126,6 +128,27 @@ public class UserServiceImpl implements UserService{
         }catch (Exception e){
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return ApiResult.failure("Error judging user login");
+        }
+    }
+
+    @Override
+    public ApiResult userSearch(Integer userId, String query) {
+        try{
+            userMapper.saveSearchRecord(userId, query);
+            List<Game> result = elasticSearchService.searchGamesByTitleAndTagsAndDescription(query, query, query);
+            return ApiResult.success(result);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public ApiResult favoriteGame(Integer userId, Integer appId) {
+        try{
+            userMapper.favoriteGame(userId, appId);
+            return ApiResult.success(null);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 }

@@ -22,4 +22,10 @@ public interface UserService {
     // 用户登录
     ApiResult userLogin(String email, String password);
 
+    // 用户搜索
+    ApiResult userSearch(Integer userId, String query);
+
+    // 收藏商品
+    ApiResult favoriteGame(Integer userId, Integer appId);
+
 }

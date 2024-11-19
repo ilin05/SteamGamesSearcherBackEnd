@@ -41,10 +41,22 @@ public interface UserMapper {
     public int deleteUser(String email);
 
     // 存储游戏数据
-    @Insert("insert into games(app_id, title, released_date, win, mac, linux, price, tags, support_language, website, header_image, recommendations, positive, negative, estimated_owners, screenshots, description) values (#{appId}, #{title}, #{releaseDate}, #{winSupport}, #{macSupport}, #{linuxSupport}, #{price}, #{tags}, #{supportLanguage}, #{website}, #{headerImage}, #{recommendations}, #{positive}, #{negative}, #{estimatedOwners}, #{screenshots}, #{description})")
+    @Insert("insert into games(app_id, title, released_date, win, mac, linux, price, tags, support_language, website, header_image, recommendations, positive, negative, estimated_owners, screenshots, description, movies) values (#{appId}, #{title}, #{releaseDate}, #{winSupport}, #{macSupport}, #{linuxSupport}, #{price}, #{tags}, #{supportLanguage}, #{website}, #{headerImage}, #{recommendations}, #{positive}, #{negative}, #{estimatedOwners}, #{screenshots}, #{description}, #{movies})")
     public int storeGame(Game game);
 
     // 获取所有游戏
     @Select("select * from games")
-    List<Game> getAllGames();
+    public List<Game> getAllGames();
+
+    // 获取所有游戏，储存到ElasticGame中
+    @Select("select * from games")
+    public List<ElasticGame> getAllElasticGames();
+
+    // 保存搜索记录
+    @Insert("insert into search_records(user_id, search_text) values (#{userId}, #{query})")
+    public int saveSearchRecord(int userId, String query);
+
+    // 收藏商品
+    @Insert("insert into favorites(user_id, app_id) values (#{userId}, #{appId})")
+    public int favoriteGame(int userId, int appId);
 }

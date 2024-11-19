@@ -6,6 +6,13 @@ import java.util.List;
 
 public interface ElasticSearchService {
 
-    public List<Game> searchGames(String query) throws IOException;
+    public List<Game> searchGamesByTitle(String query) throws IOException;
 
+    public List<Game> getAllGamesWithScroll(int pageSize) throws IOException;
+
+    public List<Game> searchGamesByTags(String query) throws IOException;
+
+    public List<Game> searchGamesByDescription(String query) throws IOException;
+
+    public List<Game> searchGamesByTitleAndTagsAndDescription(String title, String tags, String description) throws IOException;
 }

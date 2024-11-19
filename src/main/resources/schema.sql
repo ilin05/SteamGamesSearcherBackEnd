@@ -27,15 +27,22 @@ create table games (
     negative INT,
     estimated_owners INT,
     screenshots TEXT,
-    description TEXT
+    description TEXT,
+    movies TEXT
 );
 
-create table recommendations (
-    review_id INT PRIMARY KEY,
-    app_id INT,
-    helpful INT,
-    funny INT,
-    hours DECIMAL(10, 1),
-    is_recommend BOOLEAN,
-    foreign key (app_id) REFERENCES games(app_id)
-)
+create table search_records (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    search_text VARCHAR(255) NOT NULL,
+    search_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    foreign key (user_id) REFERENCES users(id)
+);
+
+create table favorites (
+   id INT AUTO_INCREMENT PRIMARY KEY,
+   user_id INT,
+   app_id INT,
+   foreign key (user_id) REFERENCES users(id),
+   foreign key (app_id) REFERENCES games(app_id)
+);

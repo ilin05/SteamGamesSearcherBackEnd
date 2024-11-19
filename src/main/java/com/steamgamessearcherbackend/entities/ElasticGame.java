@@ -8,7 +8,6 @@ import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import java.io.Serial;
-import java.util.Date;
 import java.io.Serializable;
 
 @Getter
@@ -17,7 +16,8 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Data
 @Document(indexName = "games")
-public class Game implements Serializable{
+public class ElasticGame implements Serializable{
+    @Serial
     private static final long serialVersionUID = 42L;
 
     @JsonProperty("appId")
