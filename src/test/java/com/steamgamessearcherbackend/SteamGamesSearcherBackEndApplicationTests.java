@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.steamgamessearcherbackend.entities.Game;
 import com.steamgamessearcherbackend.entities.User;
+import com.steamgamessearcherbackend.entities.GameForFrontEnd;
 import com.steamgamessearcherbackend.mapper.UserMapper;
 import com.steamgamessearcherbackend.repository.GameRepository;
 import com.steamgamessearcherbackend.service.ElasticSearchService;
@@ -40,6 +41,102 @@ class SteamGamesSearcherBackEndApplicationTests {
         List<Game> games = elasticSearchService.searchGamesByTitle(query);
         System.out.println("共查询到" + games.size() + "个结果");
         for(Game game : games){
+            System.out.println(game);
+        }
+    }
+
+    @Test
+    void testShowFavoriteGames(){
+        List<Game> games = userMapper.getUserFavorites(1);
+        List<GameForFrontEnd> gamesForFrontEnd = new ArrayList<>();
+        // System.out.println("共查询到" + games.size() + "个结果");
+        for(Game game : games){
+            // System.out.println(game);
+            GameForFrontEnd gameForFrontEnd = new GameForFrontEnd();
+            gameForFrontEnd.setAppId(game.getAppId());
+            gameForFrontEnd.setTitle(game.getTitle());
+            gameForFrontEnd.setReleaseDate(game.getReleaseDate());
+            gameForFrontEnd.setWinSupport(game.isWinSupport());
+            gameForFrontEnd.setMacSupport(game.isMacSupport());
+            gameForFrontEnd.setLinuxSupport(game.isLinuxSupport());
+            gameForFrontEnd.setPrice(game.getPrice());
+            if(game.getTags() != null){
+                gameForFrontEnd.setTags(List.of(game.getTags().split(", ")));
+            }
+            if(game.getSupportLanguage() != null){
+                gameForFrontEnd.setSupportLanguage(List.of(game.getSupportLanguage().split(", ")));
+            }
+            gameForFrontEnd.setWebsite(game.getWebsite());
+            gameForFrontEnd.setHeaderImage(game.getHeaderImage());
+            gameForFrontEnd.setRecommendations(game.getRecommendations());
+            gameForFrontEnd.setPositive(game.getPositive());
+            gameForFrontEnd.setNegative(game.getNegative());
+            gameForFrontEnd.setEstimatedOwners(game.getEstimatedOwners());
+            if(game.getScreenshots() != null){
+                gameForFrontEnd.setScreenshots(List.of(game.getScreenshots().split(", ")));
+            }
+            gameForFrontEnd.setDescription(game.getDescription());
+            if(game.getMovies() != null){
+                gameForFrontEnd.setMovies(List.of(game.getMovies().split(", ")));
+            }
+            gamesForFrontEnd.add(gameForFrontEnd);
+        }
+        System.out.println("共查询到" + gamesForFrontEnd.size() + "个结果");
+        for(GameForFrontEnd game : gamesForFrontEnd){
+            System.out.println(game);
+        }
+    }
+
+    @Test
+    void testSearchByTitleAndTagsAndDescription() throws IOException, InterruptedException {
+        String query = "Galactic Bowling";
+        String content = "Shoot vehicles, blow enemies with a special attack, protect your allies and ensure mission success!";
+        Process process = Runtime.getRuntime().exec("python.exe src/main/python/deepseek.py \"" + content + "\"");
+        InputStream inputStream = process.getInputStream();
+        process.waitFor();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        byte[] buffer = new byte[1024];
+        int len = -1;
+        while((len = inputStream.read(buffer)) != -1){
+            outputStream.write(buffer, 0, len);
+        }
+        System.out.println(outputStream);
+        List<Game> games = elasticSearchService.searchGamesByTitleAndTagsAndDescription(query, outputStream.toString(), query + outputStream.toString());
+        List<GameForFrontEnd> gamesForFrontEnd = new ArrayList<>();
+        // System.out.println("共查询到" + games.size() + "个结果");
+        for(Game game : games){
+            // System.out.println(game);
+            GameForFrontEnd gameForFrontEnd = new GameForFrontEnd();
+            gameForFrontEnd.setAppId(game.getAppId());
+            gameForFrontEnd.setTitle(game.getTitle());
+            gameForFrontEnd.setReleaseDate(game.getReleaseDate());
+            gameForFrontEnd.setWinSupport(game.isWinSupport());
+            gameForFrontEnd.setMacSupport(game.isMacSupport());
+            gameForFrontEnd.setLinuxSupport(game.isLinuxSupport());
+            gameForFrontEnd.setPrice(game.getPrice());
+            if(game.getTags() != null){
+                gameForFrontEnd.setTags(List.of(game.getTags().split(", ")));
+            }
+            if(game.getSupportLanguage() != null){
+                gameForFrontEnd.setSupportLanguage(List.of(game.getSupportLanguage().split(", ")));
+            }
+            gameForFrontEnd.setWebsite(game.getWebsite());
+            gameForFrontEnd.setHeaderImage(game.getHeaderImage());
+            gameForFrontEnd.setRecommendations(game.getRecommendations());
+            gameForFrontEnd.setPositive(game.getPositive());
+            gameForFrontEnd.setNegative(game.getNegative());
+            gameForFrontEnd.setEstimatedOwners(game.getEstimatedOwners());
+            if(game.getScreenshots() != null){
+                gameForFrontEnd.setScreenshots(List.of(game.getScreenshots().split(", ")));
+            }
+            gameForFrontEnd.setDescription(game.getDescription());
+            if(game.getMovies() != null){
+                gameForFrontEnd.setMovies(List.of(game.getMovies().split(", ")));
+            }
+            gamesForFrontEnd.add(gameForFrontEnd);
+        }
+        System.out.println("共查询到" + gamesForFrontEnd.size() + "个结果");
+        for(GameForFrontEnd game : gamesForFrontEnd){
             System.out.println(game);
         }
     }

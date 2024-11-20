@@ -68,4 +68,36 @@ public class UserController {
         System.out.println(password);
         return userService.userLogin(email, password);
     }
+
+    // 收藏游戏
+    @PostMapping("/addFavorites")
+    public ApiResult addFavorites(@RequestBody Map<String,Integer> addFavoritesInfo) {
+        Integer userId = addFavoritesInfo.get("userId");
+        Integer appId = addFavoritesInfo.get("appId");
+        System.out.println(userId);
+        System.out.println(appId);
+        return userService.favoriteGame(userId, appId);
+    }
+
+    // 取消收藏
+    @PostMapping("/deleteFavorites")
+    public ApiResult deleteFavorites(@RequestBody Map<String,Integer> deleteFavoritesInfo) {
+        Integer userId = deleteFavoritesInfo.get("userId");
+        Integer appId = deleteFavoritesInfo.get("appId");
+        return userService.unfavoriteGame(userId, appId);
+    }
+
+    // 获取用户收藏列表
+    @GetMapping("/getFavorites")
+    public ApiResult getUserFavorites(@RequestParam Integer userId) {
+        return userService.getUserFavorites(userId);
+    }
+
+    // 用户搜索
+    @GetMapping("/search")
+    public ApiResult userSearch(@RequestParam Map<String,String> searchInfo) {
+        Integer userId = Integer.parseInt(searchInfo.get("userId"));
+        String query = searchInfo.get("query");
+        return userService.userSearch(userId, query);
+    }
 }

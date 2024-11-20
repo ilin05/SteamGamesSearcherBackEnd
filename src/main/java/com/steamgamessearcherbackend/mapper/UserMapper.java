@@ -28,6 +28,10 @@ public interface UserMapper {
     @Select("select count(*) from users where email=#{email} and password=#{password}")
     public int judgePassword(String email, String password);
 
+    // 获取用户Id
+    @Select("select id from users where email=#{email}")
+    public int getUserId(String email);
+
     // 修改密码
     @Update("update users set password=#{newPassword} where email=#{email}")
     public int updatePassword(String newPassword, String email);
@@ -50,7 +54,7 @@ public interface UserMapper {
 
     // 获取所有游戏，储存到ElasticGame中
     @Select("select * from games")
-    public List<ElasticGame> getAllElasticGames();
+    public List<GameForFrontEnd> getAllElasticGames();
 
     // 保存搜索记录
     @Insert("insert into search_records(user_id, search_text) values (#{userId}, #{query})")
@@ -59,4 +63,12 @@ public interface UserMapper {
     // 收藏商品
     @Insert("insert into favorites(user_id, app_id) values (#{userId}, #{appId})")
     public int favoriteGame(int userId, int appId);
+
+    // 取消收藏
+    @Delete("delete from favorites where user_id=#{userId} and app_id=#{appId}")
+    public int unfavoriteGame(int userId, int appId);
+
+    // 获取收藏夹
+    @Select("select * from games where app_id in (select app_id from favorites where user_id = #{userId})")
+    public List<Game> getUserFavorites(int userId);
 }

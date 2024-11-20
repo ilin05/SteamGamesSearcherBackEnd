@@ -28,4 +28,9 @@ public interface UserService {
     // 收藏商品
     ApiResult favoriteGame(Integer userId, Integer appId);
 
+    // 取消收藏
+    ApiResult unfavoriteGame(Integer userId, Integer appId);
+
+    // 获取用户收藏列表
+    ApiResult getUserFavorites(Integer userId);
 }

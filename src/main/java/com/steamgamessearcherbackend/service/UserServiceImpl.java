@@ -11,8 +11,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -123,7 +125,8 @@ public class UserServiceImpl implements UserService{
             if(count != 1){
                 return ApiResult.failure("账户名或密码错误！");
             }else{
-                return ApiResult.success(email);
+                Integer userId = userMapper.getUserId(email);
+                return ApiResult.success(userId);
             }
         }catch (Exception e){
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
@@ -135,9 +138,55 @@ public class UserServiceImpl implements UserService{
     public ApiResult userSearch(Integer userId, String query) {
         try{
             userMapper.saveSearchRecord(userId, query);
-            List<Game> result = elasticSearchService.searchGamesByTitleAndTagsAndDescription(query, query, query);
-            return ApiResult.success(result);
+            Process process = Runtime.getRuntime().exec("python.exe src/main/python/deepseek.py \"" + query + "\"");
+            InputStream inputStream = process.getInputStream();
+            process.waitFor();
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            byte[] buffer = new byte[1024];
+            int len = -1;
+            while((len = inputStream.read(buffer)) != -1){
+                outputStream.write(buffer, 0, len);
+            }
+            String tags = outputStream.toString();
+            List<Game> games = elasticSearchService.searchGamesByTitleAndTagsAndDescription(query, tags, query);
+            return ApiResult.success(games);
+
+            // 如果下面的代码更方便前端展示数据的话，可以使用下面的代码
+//            List<GameForFrontEnd> gamesForFrontEnd = new ArrayList<>();
+//            for(Game game : games){
+//                GameForFrontEnd gameForFrontEnd = new GameForFrontEnd();
+//                gameForFrontEnd.setAppId(game.getAppId());
+//                gameForFrontEnd.setTitle(game.getTitle());
+//                gameForFrontEnd.setReleaseDate(game.getReleaseDate());
+//                gameForFrontEnd.setWinSupport(game.isWinSupport());
+//                gameForFrontEnd.setMacSupport(game.isMacSupport());
+//                gameForFrontEnd.setLinuxSupport(game.isLinuxSupport());
+//                gameForFrontEnd.setPrice(game.getPrice());
+//                if(game.getTags() != null){
+//                    gameForFrontEnd.setTags(List.of(game.getTags().split(", ")));
+//                }
+//                if(game.getSupportLanguage() != null){
+//                    gameForFrontEnd.setSupportLanguage(List.of(game.getSupportLanguage().split(", ")));
+//                }
+//                gameForFrontEnd.setWebsite(game.getWebsite());
+//                gameForFrontEnd.setHeaderImage(game.getHeaderImage());
+//                gameForFrontEnd.setRecommendations(game.getRecommendations());
+//                gameForFrontEnd.setPositive(game.getPositive());
+//                gameForFrontEnd.setNegative(game.getNegative());
+//                gameForFrontEnd.setEstimatedOwners(game.getEstimatedOwners());
+//                if(game.getScreenshots() != null){
+//                    gameForFrontEnd.setScreenshots(List.of(game.getScreenshots().split(", ")));
+//                }
+//                gameForFrontEnd.setDescription(game.getDescription());
+//                if(game.getMovies() != null){
+//                    gameForFrontEnd.setMovies(List.of(game.getMovies().split(", ")));
+//                }
+//                gamesForFrontEnd.add(gameForFrontEnd);
+//            }
+//            return ApiResult.success(gamesForFrontEnd);
         } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
     }
@@ -147,6 +196,60 @@ public class UserServiceImpl implements UserService{
         try{
             userMapper.favoriteGame(userId, appId);
             return ApiResult.success(null);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public ApiResult unfavoriteGame(Integer userId, Integer appId) {
+        try{
+            userMapper.unfavoriteGame(userId, appId);
+            return ApiResult.success(null);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public ApiResult getUserFavorites(Integer userId) {
+        try{
+            List<Game> games = userMapper.getUserFavorites(userId);
+            return ApiResult.success(games);
+
+            // 如果下面的代码更方便前端展示数据的话，可以使用下面的代码
+//            List<GameForFrontEnd> gamesForFrontEnd = new ArrayList<>();
+//            for(Game game : games){
+//                GameForFrontEnd gameForFrontEnd = new GameForFrontEnd();
+//                gameForFrontEnd.setAppId(game.getAppId());
+//                gameForFrontEnd.setTitle(game.getTitle());
+//                gameForFrontEnd.setReleaseDate(game.getReleaseDate());
+//                gameForFrontEnd.setWinSupport(game.isWinSupport());
+//                gameForFrontEnd.setMacSupport(game.isMacSupport());
+//                gameForFrontEnd.setLinuxSupport(game.isLinuxSupport());
+//                gameForFrontEnd.setPrice(game.getPrice());
+//                if(game.getTags() != null){
+//                    gameForFrontEnd.setTags(List.of(game.getTags().split(", ")));
+//                }
+//                if(game.getSupportLanguage() != null){
+//                    gameForFrontEnd.setSupportLanguage(List.of(game.getSupportLanguage().split(", ")));
+//                }
+//                gameForFrontEnd.setWebsite(game.getWebsite());
+//                gameForFrontEnd.setHeaderImage(game.getHeaderImage());
+//                gameForFrontEnd.setRecommendations(game.getRecommendations());
+//                gameForFrontEnd.setPositive(game.getPositive());
+//                gameForFrontEnd.setNegative(game.getNegative());
+//                gameForFrontEnd.setEstimatedOwners(game.getEstimatedOwners());
+//                if(game.getScreenshots() != null){
+//                    gameForFrontEnd.setScreenshots(List.of(game.getScreenshots().split(", ")));
+//                }
+//                gameForFrontEnd.setDescription(game.getDescription());
+//                if(game.getMovies() != null){
+//                    gameForFrontEnd.setMovies(List.of(game.getMovies().split(", ")));
+//                }
+//                gamesForFrontEnd.add(gameForFrontEnd);
+//            }
+//            return ApiResult.success(gamesForFrontEnd);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
