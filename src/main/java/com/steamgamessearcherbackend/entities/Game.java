@@ -29,8 +29,8 @@ public class Game implements Serializable{
     @Field(type = FieldType.Text, analyzer = "ik_max_word")
     private String title;
 
-    @JsonProperty("releaseDate")
-    private String releaseDate;
+    @JsonProperty("releasedDate")
+    private String releasedDate;
 
     @JsonProperty("winSupport")
     private boolean winSupport;

@@ -95,9 +95,15 @@ public class UserController {
 
     // 用户搜索
     @GetMapping("/search")
-    public ApiResult userSearch(@RequestParam Map<String,String> searchInfo) {
-        Integer userId = Integer.parseInt(searchInfo.get("userId"));
-        String query = searchInfo.get("query");
+    public ApiResult userSearch(@RequestParam Integer userId, @RequestParam String query, @RequestParam List<String> tags, @RequestParam List<String> supportLanguages) {
+//        Integer userId = Integer.parseInt(searchInfo.get("userId").toString());
+//        String query = searchInfo.get("query").toString();
+//        List<String> tags = (List<String>) searchInfo.get("tags");
+//        List<String> supportLanguages = (List<String>) searchInfo.get("supportLanguages");
+        System.out.println("userId: " + userId);
+        System.out.println("query: " + query);
+        System.out.println("tags: " + tags);
+        System.out.println("supportLanguages: " + supportLanguages);
         return userService.userSearch(userId, query);
     }
 }

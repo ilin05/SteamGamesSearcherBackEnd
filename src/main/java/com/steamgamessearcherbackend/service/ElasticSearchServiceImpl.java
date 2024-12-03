@@ -101,8 +101,14 @@ public class ElasticSearchServiceImpl implements ElasticSearchService {
         List<Game> results = new ArrayList<>();
         SearchRequest searchRequest = new SearchRequest.Builder()
                 .index("games")
-                .query(q-> q.match(m-> m.field("description").query(query)))
+                .query(q -> q.bool(b -> b
+                        .must(m -> m.match(t -> t.field("tags").query(query).fuzziness("AUTO")))
+                        .must(m -> m.match(d -> d.field("description").query(query).fuzziness("AUTO")))
+                        .must(m -> m.match(t -> t.field("title").query(query).fuzziness("AUTO")))
+                ))
+                .size(10)
                 .build();
+//                .query(q-> q.match(m-> m.field("description").query(query)))
         SearchResponse<Game> searchResponse = elasticsearchClient.search(searchRequest, Game.class);
         for(Hit<Game> hit : searchResponse.hits().hits()) {
             results.add(hit.source());
@@ -115,9 +121,15 @@ public class ElasticSearchServiceImpl implements ElasticSearchService {
         List<Game> results = new ArrayList<>();
         SearchRequest searchRequest = new SearchRequest.Builder()
                 .index("games")
-                .query(q-> q.match(m-> m.field("title").query(title)))
-                .query(q-> q.match(m-> m.field("tags").query(tags)))
-                .query(q-> q.match(m-> m.field("description").query(description)))
+                .query(q -> q.bool(b -> b
+                        .must(m -> m.match(t -> t.field("tags").query(tags).fuzziness("AUTO")))
+                        .must(m -> m.match(d -> d.field("description").query(description).fuzziness("AUTO")))
+                        .must(m -> m.match(t -> t.field("title").query(title).fuzziness("AUTO")))
+                ))
+                .size(10)
+//                .query(q-> q.match(m-> m.field("title").query(title)))
+//                .query(q-> q.match(m-> m.field("tags").query(tags)))
+//                .query(q-> q.match(m-> m.field("description").query(description)))
                 .build();
         SearchResponse<Game> searchResponse = elasticsearchClient.search(searchRequest, Game.class);
         for(Hit<Game> hit : searchResponse.hits().hits()) {

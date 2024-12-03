@@ -82,3 +82,35 @@ elasticsearch.hosts: ["http://localhost:9200"]
 ```
 
 然后就可以启动`kibana.bat`了。之后访问[Console - Dev Tools - Elastic](http://localhost:5601/app/dev_tools#/console)，看看能不能用。
+
+
+
+
+
+**游戏的tag共有452个，按数量做如下排序：**
+
+```
+Indie, Singleplayer, Action, Casual, Adventure, 2D, Strategy, Simulation, RPG, Puzzle, Atmospheric, 3D, Early Access, Pixel Graphics, Story Rich, Colorful, Exploration, Cute, First-Person, Arcade, Multiplayer, Fantasy, Funny, Shooter, Retro, Horror, Platformer, Family Friendly, Anime, Sci-fi, Action-Adventure, Relaxing, Female Protagonist, Difficult, VR, Third Person, Survival, Top-Down, Open World, Stylized, Controller, Combat, Great Soundtrack, Comedy, Visual Novel, 2D Platformer, FPS, Violent, Mystery, Co-op, Free to Play, Dark, Minimalist, Physics, Realistic, Cartoony, Psychological Horror, Choices Matter, Point & Click, Linear, Gore, Sandbox, PvP, Multiple Endings, Sports, Space, Side Scroller, Rogue-like, Old School, Tactical, Building, PvE, Rogue-lite, Puzzle-Platformer, Character Customization, Management, Hidden Object, Hand-drawn, Action RPG, Sexual Content, Magic, Logic, Racing, Nudity, Local Multiplayer, Shoot 'Em Up, 3D Platformer, Procedural Generation, Turn-Based Strategy, Survival Horror, Cartoon, Futuristic, Bullet Hell, Medieval, Turn-Based Combat, Online Co-Op, Crafting, Turn-Based Tactics, Walking Simulator, Drama, Interactive Fiction, Choose Your Own Adventure, Hack and Slash, Action Roguelike, Zombies, 1990's, Resource Management, Local Co-Op, Score Attack, JRPG, Dungeon Crawler, Replay Value, Education, Dark Fantasy, Surreal, War, Historical, Immersive Sim, Turn-Based, Post-apocalyptic, Top-Down Shooter, Nature, Emotional, Base-Building, Stealth, Isometric, Romance, Text-Based, Fast-Paced, Massively Multiplayer, Short, Card Game, Abstract, Classic, Clicker, RTS, Precision Platformer, Military, 1980s, 2.5D, Third-Person Shooter, Tower Defense, Investigation, Board Game, Memes, Detective, Narration, RPGMaker, Dating Sim, Robots, Aliens, Cyberpunk, Perma Death, Tabletop, Cinematic, Driving, VR Only, Life Sim, Dark Humor, Economy, Arena Shooter, Time Management, Mature, 4 Player Local, Flight, Psychological, Thriller, Strategy RPG, Demons, Real Time Tactics, City Builder, Experimental, Conversation, Beat 'em up, Psychedelic, Runner, Fighting, LGBTQ+, Metroidvania, Music, Wargame, Tactical RPG, Nonlinear, Supernatural, Tutorial, Competitive, Team-Based, Collectathon, Lore-Rich, Level Editor, Artificial Intelligence, Comic Book, Idler, Twin Stick Shooter, Automobile Sim, Loot, Dystopian , Party-Based RPG, Parkour, Modern, Utilities, Destruction, Grid-Based Movement, 2D Fighter, Souls-like, Hentai, Match 3, Rhythm, Cats, Alternate History, Deckbuilding, Design & Illustration, Moddable, CRPG, Inventory Management, Crime, Mythology, Space Sim, Beautiful, Card Battler, Soundtrack, Grand Strategy, World War II, Science, Philosophical, Dark Comedy, Noir, Mystery Dungeon, 3D Fighter, Character Action Game, Lovecraftian, Split Screen, Word Game, NSFW, Swordplay, Farming Sim, Colony Sim, Automation, Mouse only, Creature Collector, e-sports, 6DOF, Voxel, 3D Vision, Dragons, Software, Vehicular Combat, Solitaire, Bullet Time, Hero Shooter, Battle Royale, Mechs, Agriculture, Parody , Combat Racing, Capitalism, Open World Survival Craft, Spectacle fighter, America, Blood, Time Manipulation, Animation & Modeling, Gun Customization, Class-Based, Sokoban, MMORPG, Steampunk, FMV, Addictive, Hex Grid, God Game, Political, Conspiracy, Gothic, Martial Arts, Ninja, Game Development, Co-op Campaign, Pirates, Tanks, Otome, Real-Time, Trading, Auto Battler, Underground, Satire, Quick-Time Events, Dog, Mining, Time Travel, Cooking, Programming, Looter Shooter, 4X, Underwater, Remake, Hacking, Hunting, Dynamic Narration, Cult Classic, Dinosaurs, Fishing, Politics, Escape Room, Real-Time with Pause, Faith, Minigames, Naval, Vampire, Political Sim, Western, Video Production, Trading Card Game, Party Game, Superhero, Narrative, Transportation, Assassin, Immersive, Action RTS, Illuminati, Typing, MOBA, Touch-Friendly, Time Attack, Cozy, Asynchronous Multiplayer, Trivia, Trains, On-Rails Shooter, Cold War, Roguelike Deckbuilder, Party, Audio Production, Snow, Traditional Roguelike, Software Training, Heist, Archery, Offroad, Naval Combat, Diplomacy, Music-Based Procedural Generation, Experience, Football, Kickstarter, Villain Protagonist, Soccer, Sailing, Mars, Wholesome, Chess, Foreign, Nostalgia, GameMaker, Gambling, Horses, Sequel, Sniper, Boxing, Photo Editing, Episodic, World War I, Golf, Spelling, Jet, Unforgiving, Motorbike, Outbreak Sim, Transhumanism, Werewolves, Web Publishing, Rome, Pinball, Farming, Bikes, Silent Protagonist, Epic, Roguevania, Spaceships, Basketball, Asymmetric VR, Medical Sim, Crowdfunded, Submarine, LEGO, Social Deduction, Movie, Games Workshop, 360 Video, Mini Golf, Ambient, Electronic Music, Vikings, Based On A Novel, Baseball, Dungeons & Dragons, Gaming, Wrestling, Mod, Warhammer 40K, Tennis, Pool, Lemmings, Motocross, Intentionally Awkward Controls, Skateboarding, Cycling, Boomer Shooter, Hockey, Instrumental Music, Jump Scare, Skating, Skiing, Bowling, Football (Soccer), TrackIR, Documentary, Boss Rush, Rock Music, 8-bit Music, Snowboarding, Voice Control, Musou, Job Simulator, BMX, Masterpiece, Electronic, ATV, Hardware, Well-Written, Cricket, Football (American), Benchmark, Lara Croft, Reboot, Feature Film, Volleyball, Steam Machine, Shop Keeper, Mahjong, Coding, Extraction Shooter, Birds, Rugby, Fox, Dwarf, Hobby Sim, Tile-Matching, Batman, Snooker, Elf
+```
+
+展开高级选项之后，应该显示Singleplayer, Action, Casual, Adventure, 2D, Strategy, Simulation, RPG, Puzzle, Atmospheric, 3D, Early Access, Pixel Graphics这些，其他标签可以搜索得到。
+
+
+
+**所有语言有这些：**
+
+```shell
+English, Simplified Chinese, German, French, Russian, Spanish - Spain, Japanese, Italian, Korean, Traditional Chinese, Portuguese - Brazil, Polish, Turkish, Spanish - Latin America, Dutch, Portuguese, Czech, Ukrainian, Swedish, Thai, Arabic, Hungarian, Danish, Norwegian, Finnish, Portuguese - Portugal, Romanian, Greek, Vietnamese, Bulgarian, Indonesian, Hindi, Catalan, Malay, Slovak, Serbian, Hebrew, Lithuanian, Croatian, Latvian, Estonian, Basque, Bangla, Filipino, Persian, Belarusian, Azerbaijani, Slovenian, Albanian, Icelandic, Galician, Afrikaans, Bosnian, Urdu, Georgian, Kazakh, Mongolian, Uzbek, Welsh, Irish, Macedonian, Tamil, Swahili, Armenian, Zulu, Luxembourgish, Yoruba, Kinyarwanda, Malayalam, Hausa, Gujarati, Kyrgyz, Punjabi (Gurmukhi), Tajik, Tatar, Turkmen, Igbo, Kannada, Maltese, Nepali, Sotho, Sinhala, Uyghur, Scots, Xhosa, Maori, Marathi, Odia, Telugu, Amharic, Assamese, Khmer, Quechua, Konkani, Punjabi (Shahmukhi), Sindhi, Sorani, Tigrinya, Dari, Cherokee, Valencian, Wolof, Tswana
+```
+
+展开高级选项后，应该显示English, Simplified Chinese, German, French, Russian, Spanish - Spain, Japanese这几个，其他语言可以搜索得到。
+
+
+
+**指定标签计划：**
+
+* tags: 先展示十个可供选择，用户可以搜索别的标签
+* winSupport, linuxSupport, macSupport
+* price: 指定范围
+* supported_language: English, French, Germany, Chinese
+

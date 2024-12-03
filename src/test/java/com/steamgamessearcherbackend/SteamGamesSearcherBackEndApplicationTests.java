@@ -55,7 +55,7 @@ class SteamGamesSearcherBackEndApplicationTests {
             GameForFrontEnd gameForFrontEnd = new GameForFrontEnd();
             gameForFrontEnd.setAppId(game.getAppId());
             gameForFrontEnd.setTitle(game.getTitle());
-            gameForFrontEnd.setReleaseDate(game.getReleaseDate());
+            gameForFrontEnd.setReleasedDate(game.getReleasedDate());
             gameForFrontEnd.setWinSupport(game.isWinSupport());
             gameForFrontEnd.setMacSupport(game.isMacSupport());
             gameForFrontEnd.setLinuxSupport(game.isLinuxSupport());
@@ -109,7 +109,7 @@ class SteamGamesSearcherBackEndApplicationTests {
             GameForFrontEnd gameForFrontEnd = new GameForFrontEnd();
             gameForFrontEnd.setAppId(game.getAppId());
             gameForFrontEnd.setTitle(game.getTitle());
-            gameForFrontEnd.setReleaseDate(game.getReleaseDate());
+            gameForFrontEnd.setReleasedDate(game.getReleasedDate());
             gameForFrontEnd.setWinSupport(game.isWinSupport());
             gameForFrontEnd.setMacSupport(game.isMacSupport());
             gameForFrontEnd.setLinuxSupport(game.isLinuxSupport());
@@ -201,6 +201,37 @@ class SteamGamesSearcherBackEndApplicationTests {
     }
 
     @Test
+    void testFindAllLanguages() throws IOException {
+        List<Game> games = elasticSearchService.getAllGamesWithScroll(1000);
+        System.out.println("共查询到" + games.size() + "个结果");
+        Map<String, Integer> languageMap = new java.util.HashMap<>();
+        List<String> languages = new ArrayList<>();
+        for(Game game : games){
+            //System.out.println(game.getlanguages());
+            if(game.getSupportLanguage() == null){
+                continue;
+            }
+            String[] parts = game.getSupportLanguage().split(", ");
+            for(String part : parts){
+                if(!languages.contains(part)){
+                    languages.add(part);
+                    languageMap.put(part, 1);
+                }else{
+                    languageMap.replace(part, languageMap.get(part) + 1);
+                }
+            }
+        }
+        languages.sort((language1, language2) -> languageMap.get(language2) - languageMap.get(language1));
+        System.out.println("repository中，游戏数目为：" + gameRepository.count());
+        System.out.println("共查询到" + languages.size() + "个language");
+        for(String language : languages){
+            //System.out.println(language);
+            System.out.println(language + ": " + languageMap.get(language));
+        }
+        System.out.println(languages);
+    }
+
+    @Test
     void contextLoads() {
         gameRepository.deleteAll();
         List<Game> gameList = userMapper.getAllGames();
@@ -269,7 +300,7 @@ class SteamGamesSearcherBackEndApplicationTests {
                 Game game = new Game();
                 game.setAppId(Integer.parseInt(keys.next()));
                 game.setTitle(node.get("name").asText());
-                game.setReleaseDate(node.get("release_date").asText());
+                game.setReleasedDate(node.get("release_date").asText());
                 System.out.println("hello3");
                 game.setWinSupport(node.get("windows").asBoolean());
                 game.setMacSupport(node.get("mac").asBoolean());

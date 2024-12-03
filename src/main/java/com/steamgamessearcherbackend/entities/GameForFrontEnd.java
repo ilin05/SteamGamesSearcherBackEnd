@@ -11,7 +11,7 @@ import java.util.List;
 public class GameForFrontEnd implements Serializable{
     private Integer appId;
     private String title;
-    private String releaseDate;
+    private String releasedDate;
     private boolean winSupport;
     private boolean macSupport;
     private boolean linuxSupport;
