@@ -3,14 +3,12 @@ package com.steamgamessearcherbackend;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.steamgamessearcherbackend.entities.Game;
-import com.steamgamessearcherbackend.entities.User;
 import com.steamgamessearcherbackend.entities.GameForFrontEnd;
 import com.steamgamessearcherbackend.mapper.UserMapper;
 import com.steamgamessearcherbackend.repository.GameRepository;
 import com.steamgamessearcherbackend.service.ElasticSearchService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -56,9 +54,9 @@ class SteamGamesSearcherBackEndApplicationTests {
             gameForFrontEnd.setAppId(game.getAppId());
             gameForFrontEnd.setTitle(game.getTitle());
             gameForFrontEnd.setReleasedDate(game.getReleasedDate());
-            gameForFrontEnd.setWinSupport(game.isWinSupport());
-            gameForFrontEnd.setMacSupport(game.isMacSupport());
-            gameForFrontEnd.setLinuxSupport(game.isLinuxSupport());
+            gameForFrontEnd.setWin(game.isWin());
+            gameForFrontEnd.setMac(game.isMac());
+            gameForFrontEnd.setLinux(game.isLinux());
             gameForFrontEnd.setPrice(game.getPrice());
             if(game.getTags() != null){
                 gameForFrontEnd.setTags(List.of(game.getTags().split(", ")));
@@ -101,7 +99,7 @@ class SteamGamesSearcherBackEndApplicationTests {
             outputStream.write(buffer, 0, len);
         }
         System.out.println(outputStream);
-        List<Game> games = elasticSearchService.searchGamesByTitleAndTagsAndDescription(query, outputStream.toString(), query + outputStream.toString());
+        List<Game> games = elasticSearchService.comprehensiveSearch(query, outputStream.toString(), query + outputStream.toString(), null, null, null, null, null, null);
         List<GameForFrontEnd> gamesForFrontEnd = new ArrayList<>();
         // System.out.println("共查询到" + games.size() + "个结果");
         for(Game game : games){
@@ -110,9 +108,9 @@ class SteamGamesSearcherBackEndApplicationTests {
             gameForFrontEnd.setAppId(game.getAppId());
             gameForFrontEnd.setTitle(game.getTitle());
             gameForFrontEnd.setReleasedDate(game.getReleasedDate());
-            gameForFrontEnd.setWinSupport(game.isWinSupport());
-            gameForFrontEnd.setMacSupport(game.isMacSupport());
-            gameForFrontEnd.setLinuxSupport(game.isLinuxSupport());
+            gameForFrontEnd.setWin(game.isWin());
+            gameForFrontEnd.setMac(game.isMac());
+            gameForFrontEnd.setLinux(game.isLinux());
             gameForFrontEnd.setPrice(game.getPrice());
             if(game.getTags() != null){
                 gameForFrontEnd.setTags(List.of(game.getTags().split(", ")));
@@ -302,9 +300,9 @@ class SteamGamesSearcherBackEndApplicationTests {
                 game.setTitle(node.get("name").asText());
                 game.setReleasedDate(node.get("release_date").asText());
                 System.out.println("hello3");
-                game.setWinSupport(node.get("windows").asBoolean());
-                game.setMacSupport(node.get("mac").asBoolean());
-                game.setLinuxSupport(node.get("linux").asBoolean());
+                game.setWin(node.get("windows").asBoolean());
+                game.setMac(node.get("mac").asBoolean());
+                game.setLinux(node.get("linux").asBoolean());
                 game.setPrice(node.get("price").asDouble());
                 JsonNode tagsNode = node.get("tags");
                 if(tagsNode != null && tagsNode.isObject()){

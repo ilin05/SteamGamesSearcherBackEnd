@@ -7,8 +7,6 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
-import java.io.Serial;
-import java.util.Date;
 import java.io.Serializable;
 
 @Getter
@@ -33,15 +31,19 @@ public class Game implements Serializable{
     private String releasedDate;
 
     @JsonProperty("winSupport")
-    private boolean winSupport;
+    @Field(type = FieldType.Boolean)
+    private boolean win;
 
     @JsonProperty("macSupport")
-    private boolean macSupport;
+    @Field(type = FieldType.Boolean)
+    private boolean mac;
 
     @JsonProperty("linuxSupport")
-    private boolean linuxSupport;
+    @Field(type = FieldType.Boolean)
+    private boolean linux;
 
     @JsonProperty("price")
+    @Field(type = FieldType.Double)
     private Double price;
 
     @JsonProperty("tags")
@@ -49,6 +51,7 @@ public class Game implements Serializable{
     private String tags;
 
     @JsonProperty("supportLanguage")
+    @Field(type = FieldType.Text, analyzer = "ik_max_word")
     private String supportLanguage;
 
     @JsonProperty("website")

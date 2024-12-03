@@ -1,24 +1,18 @@
 package com.steamgamessearcherbackend.service;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.steamgamessearcherbackend.mapper.UserMapper;
-import com.steamgamessearcherbackend.service.*;
 import com.steamgamessearcherbackend.entities.*;
 import com.steamgamessearcherbackend.utils.ApiResult;
-import org.springframework.boot.autoconfigure.batch.BatchProperties;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 // import java.util.Map;
-import java.util.Iterator;
-import java.util.Map.Entry;
+
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -133,10 +127,10 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public ApiResult userSearch(Integer userId, String query) {
+    public ApiResult userSearch(Integer userId, String query, String specifiedTags, String supportLanguages, Double lowestPrice, Double highestPrice, Boolean winSupport, Boolean linuxSupport, Boolean macSupport) {
         try{
             System.out.println("hello1");
-            userMapper.saveSearchRecord(userId, query);
+            // userMapper.saveSearchRecord(userId, query);
             Process process = Runtime.getRuntime().exec("python.exe src/main/python/deepseek.py \"" + query + "\"");
             InputStream inputStream = process.getInputStream();
             process.waitFor();
@@ -147,7 +141,8 @@ public class UserServiceImpl implements UserService{
                 outputStream.write(buffer, 0, len);
             }
             String tags = outputStream.toString();
-            List<Game> games = elasticSearchService.searchGamesByTitleAndTagsAndDescription(query, tags, query);
+            userMapper.saveSearchRecord(userId, query, tags);
+            List<Game> games = elasticSearchService.comprehensiveSearch(query, tags, query, supportLanguages, lowestPrice, highestPrice, winSupport, linuxSupport, macSupport);
             // return ApiResult.success(games);
 
             // 如果下面的代码更方便前端展示数据的话，可以使用下面的代码
@@ -157,9 +152,9 @@ public class UserServiceImpl implements UserService{
                 gameForFrontEnd.setAppId(game.getAppId());
                 gameForFrontEnd.setTitle(game.getTitle());
                 gameForFrontEnd.setReleasedDate(game.getReleasedDate());
-                gameForFrontEnd.setWinSupport(game.isWinSupport());
-                gameForFrontEnd.setMacSupport(game.isMacSupport());
-                gameForFrontEnd.setLinuxSupport(game.isLinuxSupport());
+                gameForFrontEnd.setWin(game.isWin());
+                gameForFrontEnd.setMac(game.isMac());
+                gameForFrontEnd.setLinux(game.isLinux());
                 gameForFrontEnd.setPrice(game.getPrice());
                 if(game.getTags() != null){
                     gameForFrontEnd.setTags(List.of(game.getTags().split(", ")));
@@ -226,9 +221,9 @@ public class UserServiceImpl implements UserService{
                 gameForFrontEnd.setAppId(game.getAppId());
                 gameForFrontEnd.setTitle(game.getTitle());
                 gameForFrontEnd.setReleasedDate(game.getReleasedDate());
-                gameForFrontEnd.setWinSupport(game.isWinSupport());
-                gameForFrontEnd.setMacSupport(game.isMacSupport());
-                gameForFrontEnd.setLinuxSupport(game.isLinuxSupport());
+                gameForFrontEnd.setWin(game.isWin());
+                gameForFrontEnd.setMac(game.isMac());
+                gameForFrontEnd.setLinux(game.isLinux());
                 gameForFrontEnd.setPrice(game.getPrice());
                 if(game.getTags() != null){
                     gameForFrontEnd.setTags(List.of(game.getTags().split(", ")));
@@ -278,6 +273,20 @@ public class UserServiceImpl implements UserService{
                     }
                 }
             }
+
+            List<String> searchTags = userMapper.getSearchTags(userId);
+            for(String searchTag : searchTags){
+                List<String> tempTags = Arrays.asList(searchTag.split(", "));
+                for(String tempTag : tempTags){
+                    if(!tags.contains(tempTag)){
+                        tags.add(tempTag);
+                        tagMap.put(tempTag, 1);
+                    }else{
+                        tagMap.replace(tempTag, tagMap.get(tempTag) + 1);
+                    }
+                }
+            }
+
             tags.sort((tag1, tag2) -> tagMap.get(tag2) - tagMap.get(tag1));
             // 如果tags超过十个，则只保留前十个
             if(tags.size() > 10){

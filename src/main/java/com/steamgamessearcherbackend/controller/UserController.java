@@ -101,7 +101,8 @@ public class UserController {
 
     // 用户搜索
     @GetMapping("/search")
-    public ApiResult userSearch(@RequestParam Integer userId, @RequestParam String query, @RequestParam List<String> tags, @RequestParam List<String> supportLanguages, @RequestParam Double lowestPrice, @RequestParam Double highestPrice) {
+    public ApiResult userSearch(@RequestParam Integer userId, @RequestParam String query, @RequestParam List<String> tags, @RequestParam List<String> supportLanguages, @RequestParam Double lowestPrice, @RequestParam Double highestPrice,
+                                @RequestParam Boolean winSupport, @RequestParam Boolean macSupport, @RequestParam Boolean linuxSupport) {
 //        Integer userId = Integer.parseInt(searchInfo.get("userId").toString());
 //        String query = searchInfo.get("query").toString();
 //        List<String> tags = (List<String>) searchInfo.get("tags");
@@ -112,6 +113,14 @@ public class UserController {
         System.out.println("supportLanguages: " + supportLanguages);
         System.out.println("lowestPrice: " + lowestPrice);
         System.out.println("highestPrice: " + highestPrice);
-        return userService.userSearch(userId, query);
+        String specifiedTags = "";
+        for (String tag : tags) {
+            specifiedTags += tag + ", ";
+        }
+        String supportLanguagesStr = "";
+        for (String language : supportLanguages) {
+            supportLanguagesStr += language + ", ";
+        }
+        return userService.userSearch(userId, query, specifiedTags, supportLanguagesStr, lowestPrice, highestPrice, winSupport, linuxSupport, macSupport);
     }
 }

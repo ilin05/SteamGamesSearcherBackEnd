@@ -12,9 +12,9 @@ public class GameForFrontEnd implements Serializable{
     private Integer appId;
     private String title;
     private String releasedDate;
-    private boolean winSupport;
-    private boolean macSupport;
-    private boolean linuxSupport;
+    private boolean win;
+    private boolean mac;
+    private boolean linux;
     private Double price;
     private List<String> tags;
     private List<String> supportLanguage;

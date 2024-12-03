@@ -57,8 +57,8 @@ public interface UserMapper {
     public List<GameForFrontEnd> getAllElasticGames();
 
     // 保存搜索记录
-    @Insert("insert into search_records(user_id, search_text) values (#{userId}, #{query})")
-    public int saveSearchRecord(int userId, String query);
+    @Insert("insert into search_records(user_id, search_text, tags) values (#{userId}, #{query}, #{tags})")
+    public int saveSearchRecord(int userId, String query, String tags);
 
     // 收藏商品
     @Insert("insert into favorites(user_id, app_id) values (#{userId}, #{appId})")
@@ -75,4 +75,8 @@ public interface UserMapper {
     // 获取收藏夹
     @Select("select * from games where app_id in (select app_id from favorites where user_id = #{userId})")
     public List<Game> getUserFavorites(int userId);
+
+    // 获取搜索记录识别的tags
+    @Select("select tags from search_records where user_id=#{userId}")
+    public List<String> getSearchTags(int userId);
 }

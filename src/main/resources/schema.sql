@@ -36,6 +36,7 @@ create table search_records (
     user_id INT,
     search_text VARCHAR(255) NOT NULL,
     search_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    tags TEXT,
     foreign key (user_id) REFERENCES users(id)
 );
 
