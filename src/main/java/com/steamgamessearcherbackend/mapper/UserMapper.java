@@ -64,6 +64,10 @@ public interface UserMapper {
     @Insert("insert into favorites(user_id, app_id) values (#{userId}, #{appId})")
     public int favoriteGame(int userId, int appId);
 
+    // 检查是否已经收藏了商品
+    @Select("select count(*) from favorites where user_id=#{userId} and app_id=#{appId}")
+    public int checkFavorite(int userId, int appId);
+
     // 取消收藏
     @Delete("delete from favorites where user_id=#{userId} and app_id=#{appId}")
     public int unfavoriteGame(int userId, int appId);

@@ -15,9 +15,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 // import java.util.Map;
 import java.util.Iterator;
 import java.util.Map.Entry;
@@ -195,6 +193,9 @@ public class UserServiceImpl implements UserService{
     @Override
     public ApiResult favoriteGame(Integer userId, Integer appId) {
         try{
+            if(userMapper.checkFavorite(userId, appId) > 0){
+                return ApiResult.failure("Game already in favorites");
+            }
             userMapper.favoriteGame(userId, appId);
             return ApiResult.success(null);
         } catch (Exception e) {
@@ -254,5 +255,43 @@ public class UserServiceImpl implements UserService{
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public ApiResult recommendGames(Integer userId) throws IOException {
+        try {
+            List<Game> userFavorites = userMapper.getUserFavorites(userId);
+            List<String> tags = new ArrayList<>();
+            Map<String, Integer> tagMap = new java.util.HashMap<>();
+            for(Game game : userFavorites){
+                //System.out.println(game.getTags());
+                if(game.getTags() == null){
+                    continue;
+                }
+                String[] parts = game.getTags().split(", ");
+                for(String part : parts){
+                    if(!tags.contains(part)){
+                        tags.add(part);
+                        tagMap.put(part, 1);
+                    }else{
+                        tagMap.replace(part, tagMap.get(part) + 1);
+                    }
+                }
+            }
+            tags.sort((tag1, tag2) -> tagMap.get(tag2) - tagMap.get(tag1));
+            // 如果tags超过十个，则只保留前十个
+            if(tags.size() > 10){
+                tags = tags.subList(0, 10);
+            }
+            StringBuilder query = new StringBuilder();
+            for(String tag : tags){
+                query.append(tag).append(", ");
+            }
+            List<Game> recommendedGames = elasticSearchService.searchGamesByTags(query.toString());
+            return ApiResult.success(recommendedGames);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        //return null;
     }
 }

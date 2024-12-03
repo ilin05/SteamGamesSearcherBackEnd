@@ -4,6 +4,7 @@ import com.steamgamessearcherbackend.entities.*;
 import com.steamgamessearcherbackend.utils.ApiResult;
 
 import java.io.IOException;
+import java.util.concurrent.ThreadPoolExecutor;
 
 public interface UserService {
 
@@ -33,4 +34,7 @@ public interface UserService {
 
     // 获取用户收藏列表
     ApiResult getUserFavorites(Integer userId);
+
+    // 猜你喜欢
+    ApiResult recommendGames(Integer userId) throws IOException;
 }

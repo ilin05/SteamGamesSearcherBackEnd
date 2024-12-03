@@ -69,6 +69,12 @@ public class UserController {
         return userService.userLogin(email, password);
     }
 
+    // 获取推荐游戏
+    @GetMapping("/recommendGames")
+    public ApiResult recommendGames(@RequestParam Integer userId) throws IOException {
+        return userService.recommendGames(userId);
+    }
+
     // 收藏游戏
     @PostMapping("/addFavorites")
     public ApiResult addFavorites(@RequestBody Map<String,Integer> addFavoritesInfo) {
@@ -95,7 +101,7 @@ public class UserController {
 
     // 用户搜索
     @GetMapping("/search")
-    public ApiResult userSearch(@RequestParam Integer userId, @RequestParam String query, @RequestParam List<String> tags, @RequestParam List<String> supportLanguages) {
+    public ApiResult userSearch(@RequestParam Integer userId, @RequestParam String query, @RequestParam List<String> tags, @RequestParam List<String> supportLanguages, @RequestParam Double lowestPrice, @RequestParam Double highestPrice) {
 //        Integer userId = Integer.parseInt(searchInfo.get("userId").toString());
 //        String query = searchInfo.get("query").toString();
 //        List<String> tags = (List<String>) searchInfo.get("tags");
@@ -104,6 +110,8 @@ public class UserController {
         System.out.println("query: " + query);
         System.out.println("tags: " + tags);
         System.out.println("supportLanguages: " + supportLanguages);
+        System.out.println("lowestPrice: " + lowestPrice);
+        System.out.println("highestPrice: " + highestPrice);
         return userService.userSearch(userId, query);
     }
 }
