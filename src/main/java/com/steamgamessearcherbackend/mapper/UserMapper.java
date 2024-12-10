@@ -45,7 +45,7 @@ public interface UserMapper {
     public int deleteUser(String email);
 
     // 存储游戏数据
-    @Insert("insert into games(app_id, title, released_date, win, mac, linux, price, tags, support_language, website, header_image, recommendations, positive, negative, estimated_owners, screenshots, description, movies) values (#{appId}, #{title}, #{releaseDate}, #{winSupport}, #{macSupport}, #{linuxSupport}, #{price}, #{tags}, #{supportLanguage}, #{website}, #{headerImage}, #{recommendations}, #{positive}, #{negative}, #{estimatedOwners}, #{screenshots}, #{description}, #{movies})")
+    @Insert("insert into games(app_id, title, released_date, win, mac, linux, price, tags, support_language, website, header_image, recommendations, positive, negative, estimated_owners, screenshots, description, movies) values (#{appId}, #{title}, #{releasedDate}, #{winSupport}, #{macSupport}, #{linuxSupport}, #{price}, #{tags}, #{supportLanguage}, #{website}, #{headerImage}, #{recommendations}, #{positive}, #{negative}, #{estimatedOwners}, #{screenshots}, #{description}, #{movies})")
     public int storeGame(Game game);
 
     // 获取所有游戏
