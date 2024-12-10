@@ -175,6 +175,18 @@ public class UserServiceImpl implements UserService{
                 if(game.getMovies() != null){
                     gameForFrontEnd.setMovies(List.of(game.getMovies().split(", ")));
                 }
+                if(game.getDevelopers() != null){
+                    gameForFrontEnd.setDevelopers(List.of(game.getDevelopers().split(", ")));
+                }
+                if(game.getPublishers() != null){
+                    gameForFrontEnd.setPublishers(List.of(game.getPublishers().split(", ")));
+                }
+                if(game.getCategories() != null){
+                    gameForFrontEnd.setCategories(List.of(game.getCategories().split(", ")));
+                }
+                if(game.getGenres() != null){
+                    gameForFrontEnd.setGenres(List.of(game.getGenres().split(", ")));
+                }
                 gamesForFrontEnd.add(gameForFrontEnd);
             }
             return ApiResult.success(gamesForFrontEnd);
@@ -243,6 +255,18 @@ public class UserServiceImpl implements UserService{
                 gameForFrontEnd.setDescription(game.getDescription());
                 if(game.getMovies() != null){
                     gameForFrontEnd.setMovies(List.of(game.getMovies().split(", ")));
+                }
+                if(game.getDevelopers() != null){
+                    gameForFrontEnd.setDevelopers(List.of(game.getDevelopers().split(", ")));
+                }
+                if(game.getPublishers() != null){
+                    gameForFrontEnd.setPublishers(List.of(game.getPublishers().split(", ")));
+                }
+                if(game.getCategories() != null){
+                    gameForFrontEnd.setCategories(List.of(game.getCategories().split(", ")));
+                }
+                if(game.getGenres() != null){
+                    gameForFrontEnd.setGenres(List.of(game.getGenres().split(", ")));
                 }
                 gamesForFrontEnd.add(gameForFrontEnd);
             }
@@ -334,6 +358,18 @@ public class UserServiceImpl implements UserService{
             gameForFrontEnd.setDescription(game.getDescription());
             if(game.getMovies() != null){
                 gameForFrontEnd.setMovies(List.of(game.getMovies().split(", ")));
+            }
+            if(game.getDevelopers() != null){
+                gameForFrontEnd.setDevelopers(List.of(game.getDevelopers().split(", ")));
+            }
+            if(game.getPublishers() != null){
+                gameForFrontEnd.setPublishers(List.of(game.getPublishers().split(", ")));
+            }
+            if(game.getCategories() != null){
+                gameForFrontEnd.setCategories(List.of(game.getCategories().split(", ")));
+            }
+            if(game.getGenres() != null){
+                gameForFrontEnd.setGenres(List.of(game.getGenres().split(", ")));
             }
             return ApiResult.success(gameForFrontEnd);
         } catch (Exception e) {

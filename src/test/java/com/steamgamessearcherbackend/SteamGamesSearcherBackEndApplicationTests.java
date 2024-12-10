@@ -7,6 +7,7 @@ import com.steamgamessearcherbackend.entities.GameForFrontEnd;
 import com.steamgamessearcherbackend.mapper.UserMapper;
 import com.steamgamessearcherbackend.repository.GameRepository;
 import com.steamgamessearcherbackend.service.ElasticSearchService;
+import jakarta.json.Json;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -130,6 +131,18 @@ class SteamGamesSearcherBackEndApplicationTests {
             gameForFrontEnd.setDescription(game.getDescription());
             if(game.getMovies() != null){
                 gameForFrontEnd.setMovies(List.of(game.getMovies().split(", ")));
+            }
+            if(game.getDevelopers() != null){
+                gameForFrontEnd.setDevelopers(List.of(game.getDevelopers().split(", ")));
+            }
+            if(game.getPublishers() != null){
+                gameForFrontEnd.setPublishers(List.of(game.getPublishers().split(", ")));
+            }
+            if(game.getCategories() != null){
+                gameForFrontEnd.setCategories(List.of(game.getCategories().split(", ")));
+            }
+            if(game.getGenres() != null){
+                gameForFrontEnd.setGenres(List.of(game.getGenres().split(", ")));
             }
             gamesForFrontEnd.add(gameForFrontEnd);
         }
@@ -343,6 +356,42 @@ class SteamGamesSearcherBackEndApplicationTests {
                         sb.append(", ");
                     }
                     game.setMovies(sb.toString());
+                }
+                JsonNode developersNode = node.get("developers");
+                if(developersNode.isArray()){
+                    StringBuilder sb = new StringBuilder();
+                    for(JsonNode developerNode : developersNode){
+                        sb.append(developerNode.asText());
+                        sb.append(", ");
+                    }
+                    game.setDevelopers(sb.toString());
+                }
+                JsonNode publishersNode = node.get("publishers");
+                if(publishersNode.isArray()){
+                    StringBuilder sb = new StringBuilder();
+                    for(JsonNode publisherNode : publishersNode){
+                        sb.append(publisherNode.asText());
+                        sb.append(", ");
+                    }
+                    game.setPublishers(sb.toString());
+                }
+                JsonNode categoriesNode = node.get("categories");
+                if(categoriesNode.isArray()){
+                    StringBuilder sb = new StringBuilder();
+                    for(JsonNode categoryNode : categoriesNode){
+                        sb.append(categoryNode.asText());
+                        sb.append(", ");
+                    }
+                    game.setCategories(sb.toString());
+                }
+                JsonNode genresNode = node.get("genres");
+                if(genresNode.isArray()){
+                    StringBuilder sb = new StringBuilder();
+                    for(JsonNode genreNode : genresNode){
+                        sb.append(genreNode.asText());
+                        sb.append(", ");
+                    }
+                    game.setGenres(sb.toString());
                 }
                 game.setWebsite(node.get("website").asText());
                 game.setHeaderImage(node.get("header_image").asText());

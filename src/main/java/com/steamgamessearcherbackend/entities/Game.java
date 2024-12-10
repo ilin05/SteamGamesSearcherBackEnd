@@ -81,4 +81,16 @@ public class Game implements Serializable{
 
     @JsonProperty("movies")
     private String movies;
+
+    @JsonProperty("developers")
+    private String developers;
+
+    @JsonProperty("publishers")
+    private String publishers;
+
+    @JsonProperty("categories")
+    private String categories;
+
+    @JsonProperty("genres")
+    private String genres;
 }

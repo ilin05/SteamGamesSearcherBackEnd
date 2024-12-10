@@ -27,4 +27,8 @@ public class GameForFrontEnd implements Serializable{
     private List<String> screenshots;
     private String description;
     private List<String> movies;
+    private List<String> developers;
+    private List<String> publishers;
+    private List<String> categories;
+    private List<String> genres;
 }

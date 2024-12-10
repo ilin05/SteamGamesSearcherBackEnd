@@ -28,7 +28,11 @@ create table games (
     estimated_owners INT,
     screenshots TEXT,
     description TEXT,
-    movies TEXT
+    movies TEXT,
+    developers TEXT,
+    publishers TEXT,
+    categories TEXT,
+    genres TEXT
 );
 
 create table search_records (
