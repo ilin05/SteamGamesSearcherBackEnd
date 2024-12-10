@@ -303,4 +303,42 @@ public class UserServiceImpl implements UserService{
         }
         //return null;
     }
+
+    @Override
+    public ApiResult getGameDetail(Integer appId) throws IOException {
+        try {
+            Game game = userMapper.getGameByAppId(appId);
+            GameForFrontEnd gameForFrontEnd = new GameForFrontEnd();
+            gameForFrontEnd.setAppId(game.getAppId());
+            gameForFrontEnd.setTitle(game.getTitle());
+            gameForFrontEnd.setReleasedDate(game.getReleasedDate());
+            gameForFrontEnd.setWin(game.isWin());
+            gameForFrontEnd.setMac(game.isMac());
+            gameForFrontEnd.setLinux(game.isLinux());
+            gameForFrontEnd.setPrice(game.getPrice());
+            if(game.getTags() != null){
+                gameForFrontEnd.setTags(List.of(game.getTags().split(", ")));
+            }
+            if(game.getSupportLanguage() != null){
+                gameForFrontEnd.setSupportLanguage(List.of(game.getSupportLanguage().split(", ")));
+            }
+            gameForFrontEnd.setWebsite(game.getWebsite());
+            gameForFrontEnd.setHeaderImage(game.getHeaderImage());
+            gameForFrontEnd.setRecommendations(game.getRecommendations());
+            gameForFrontEnd.setPositive(game.getPositive());
+            gameForFrontEnd.setNegative(game.getNegative());
+            gameForFrontEnd.setEstimatedOwners(game.getEstimatedOwners());
+            if(game.getScreenshots() != null){
+                gameForFrontEnd.setScreenshots(List.of(game.getScreenshots().split(", ")));
+            }
+            gameForFrontEnd.setDescription(game.getDescription());
+            if(game.getMovies() != null){
+                gameForFrontEnd.setMovies(List.of(game.getMovies().split(", ")));
+            }
+            return ApiResult.success(gameForFrontEnd);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        // return null;
+    }
 }

@@ -123,4 +123,10 @@ public class UserController {
         }
         return userService.userSearch(userId, query, specifiedTags, supportLanguagesStr, lowestPrice, highestPrice, winSupport, linuxSupport, macSupport);
     }
+
+    // 根据appId获取游戏详细信息
+    @GetMapping("/GetDetail")
+    public ApiResult getGameDetail(@RequestParam Integer appId) throws IOException {
+        return userService.getGameDetail(appId);
+    }
 }

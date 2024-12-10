@@ -37,4 +37,6 @@ public interface UserService {
 
     // 猜你喜欢
     ApiResult recommendGames(Integer userId) throws IOException;
+
+    ApiResult getGameDetail(Integer appId) throws IOException;
 }

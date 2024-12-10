@@ -79,4 +79,8 @@ public interface UserMapper {
     // 获取搜索记录识别的tags
     @Select("select tags from search_records where user_id=#{userId}")
     public List<String> getSearchTags(int userId);
+
+    // 根据appId获取游戏
+    @Select("select * from games where app_id=#{appId}")
+    public Game getGameByAppId(int appId);
 }
