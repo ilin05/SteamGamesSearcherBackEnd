@@ -30,15 +30,15 @@ public class Game implements Serializable{
     @JsonProperty("releasedDate")
     private String releasedDate;
 
-    @JsonProperty("winSupport")
+    @JsonProperty("win")
     @Field(type = FieldType.Boolean)
     private boolean win;
 
-    @JsonProperty("macSupport")
+    @JsonProperty("mac")
     @Field(type = FieldType.Boolean)
     private boolean mac;
 
-    @JsonProperty("linuxSupport")
+    @JsonProperty("linux")
     @Field(type = FieldType.Boolean)
     private boolean linux;
 
