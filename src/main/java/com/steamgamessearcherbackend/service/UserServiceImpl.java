@@ -3,6 +3,7 @@ package com.steamgamessearcherbackend.service;
 import com.steamgamessearcherbackend.mapper.UserMapper;
 import com.steamgamessearcherbackend.entities.*;
 import com.steamgamessearcherbackend.utils.ApiResult;
+import com.steamgamessearcherbackend.utils.YouDaoTranslator;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
@@ -130,6 +131,10 @@ public class UserServiceImpl implements UserService{
     public ApiResult userSearch(Integer userId, String query, String specifiedTags, String supportLanguages, Double lowestPrice, Double highestPrice, Boolean winSupport, Boolean linuxSupport, Boolean macSupport) {
         try{
             System.out.println("hello1");
+            // 如果输入的不是英文的话，就调用有道翻译API进行翻译
+            if(!query.matches("^[a-zA-Z0-9\\s]+$")){
+                query = YouDaoTranslator.translate(query);
+            }
             // userMapper.saveSearchRecord(userId, query);
             Process process = Runtime.getRuntime().exec("python.exe src/main/python/deepseek.py \"" + query + "\"");
             InputStream inputStream = process.getInputStream();
