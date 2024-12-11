@@ -25,24 +25,24 @@ public interface UserMapper {
     public int checkEmail(String email);
 
     // 匹配账户密码
-    @Select("select count(*) from users where email=#{email} and password=#{password}")
-    public int judgePassword(String email, String password);
+    @Select("select count(*) from users where id=#{userId} and password=#{password}")
+    public int judgePassword(Integer userId, String password);
 
     // 获取用户Id
     @Select("select id from users where email=#{email}")
     public int getUserId(String email);
 
     // 修改密码
-    @Update("update users set password=#{newPassword} where email=#{email}")
-    public int updatePassword(String newPassword, String email);
+    @Update("update users set password=#{newPassword} where id=#{userId}")
+    public int updatePassword(String newPassword, Integer userId);
 
     // 修改用户名
-    @Update("update users set username=#{newName} where email=#{email}")
-    public int updateUserName(String email, String newName);
+    @Update("update users set username=#{newName} where id=#{userId}")
+    public int updateUserName(Integer userId, String newName);
 
     // 注销账号
-    @Delete("delete from users where email=#{email}")
-    public int deleteUser(String email);
+    @Delete("delete from users where id=#{userId}")
+    public int deleteUser(Integer userId);
 
     // 存储游戏数据
     @Insert("insert into games(app_id, title, released_date, win, mac, linux, price, tags, support_language, website, header_image, recommendations, positive, negative, estimated_owners, screenshots, description, movies, developers, publishers, categories, genres) values (#{appId}, #{title}, #{releasedDate}, #{win}, #{mac}, #{linux}, #{price}, #{tags}, #{supportLanguage}, #{website}, #{headerImage}, #{recommendations}, #{positive}, #{negative}, #{estimatedOwners}, #{screenshots}, #{description}, #{movies}, #{developers}, #{publishers}, #{categories}, #{genres})")
@@ -87,4 +87,16 @@ public interface UserMapper {
     // 返回recommendations * estimated_owners 最高的前5个游戏
     @Select("select * from games order by recommendations * estimated_owners desc limit 5")
     public List<Game> getTopHotGames();
+
+    // 获取用户信息
+    @Select("select * from users where id=#{userId}")
+    public User getUserInfo(int userId);
+
+    // 删除用户的收藏记录
+    @Delete("delete from favorites where user_id=#{userId}")
+    public int deleteUserFavorites(int userId);
+
+    // 删除用户搜索记录
+    @Delete("delete from search_records where user_id=#{userId}")
+    public int deleteUserSearchRecords(int userId);
 }

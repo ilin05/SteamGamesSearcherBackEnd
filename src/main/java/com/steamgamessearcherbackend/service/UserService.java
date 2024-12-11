@@ -13,13 +13,13 @@ public interface UserService {
     ApiResult openAccount(User user);
 
     // 注销账号
-    ApiResult deleteAccount(User user);
+    ApiResult deleteAccount(Integer userId);
 
     // 修改密码
-    ApiResult modifyPassword(String email, String oldPassword, String newPassword);
+    ApiResult modifyPassword(Integer userId, String oldPassword, String newPassword);
 
     // 修改用户名
-    ApiResult modifyUserName(String email, String password, String newUserName);
+    ApiResult modifyUserName(Integer userId, String password, String newUserName);
 
     // 用户登录
     ApiResult userLogin(String email, String password);
@@ -44,4 +44,6 @@ public interface UserService {
     ApiResult searchByTitle(String query) throws IOException;
 
     List<GameForFrontEnd> transferEntity(List<Game> games);
+
+    ApiResult getUserInfo(Integer userId);
 }

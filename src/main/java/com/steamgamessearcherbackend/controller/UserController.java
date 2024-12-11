@@ -36,27 +36,29 @@ public class UserController {
 
     // 销户
     @PostMapping("/deleteAccount")
-    public ApiResult deleteAccount(@RequestBody User user) {
-        return userService.deleteAccount(user);
+    public ApiResult deleteAccount(@RequestBody Map<String,Integer> deleteAccountInfo) {
+        Integer userId = deleteAccountInfo.get("userId");
+        System.out.println("userId: " + userId);
+        return userService.deleteAccount(userId);
     }
 
     // 修改密码
     @PostMapping("/modifyPassword")
     public ApiResult modifyPassword(@RequestBody Map<String,String> modifytPasswordInfo) {
         System.out.println(modifytPasswordInfo);
-        String email = modifytPasswordInfo.get("email");
+        String userId = modifytPasswordInfo.get("userId");
         String oldPassword = modifytPasswordInfo.get("oldPassword");
         String newPassword = modifytPasswordInfo.get("newPassword");
-        return userService.modifyPassword(email, oldPassword, newPassword);
+        return userService.modifyPassword(Integer.parseInt(userId), oldPassword, newPassword);
     }
 
     // 修改用户名
     @PostMapping("/modifyUserName")
     public ApiResult modifyUserName(@RequestBody Map<String,String> modifytUserName) {
-        String email = modifytUserName.get("email");
+        String userId = modifytUserName.get("userId");
         String password = modifytUserName.get("password");
         String newName = modifytUserName.get("newName");
-        return userService.modifyUserName(email, password, newName);
+        return userService.modifyUserName(Integer.parseInt(userId), password, newName);
     }
 
     // 用户登录
@@ -134,5 +136,11 @@ public class UserController {
     @GetMapping("/searchByTitle")
     public ApiResult searchByTitle(@RequestParam String title) throws IOException {
         return userService.searchByTitle(title);
+    }
+
+    // 获取用户信息
+    @GetMapping("/getUserInfo")
+    public ApiResult getUserInfo(@RequestParam Integer userId) {
+        return userService.getUserInfo(userId);
     }
 }

@@ -3,6 +3,7 @@ package com.steamgamessearcherbackend.service;
 import com.steamgamessearcherbackend.mapper.UserMapper;
 import com.steamgamessearcherbackend.entities.*;
 import com.steamgamessearcherbackend.utils.ApiResult;
+import com.steamgamessearcherbackend.utils.HashUtils;
 import com.steamgamessearcherbackend.utils.YouDaoTranslator;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,7 +46,7 @@ public class UserServiceImpl implements UserService{
                 //throw new RuntimeException("User name already exists");
             }
             //System.out.println("count2: " + count2);
-            userMapper.openAccount(userName, user.getPassword(), email);
+            userMapper.openAccount(userName, HashUtils.sha256Hash(user.getPassword()), email);
             User newUser = userMapper.getUserByEmail(email);
             return ApiResult.success(newUser);
         }catch (Exception e){
@@ -56,15 +57,11 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public ApiResult deleteAccount(User user) {
+    public ApiResult deleteAccount(Integer userId) {
         try{
-            String email = user.getEmail();
-            String password = user.getPassword();
-            int count = userMapper.judgePassword(email, password);
-            if(count != 1){
-                return ApiResult.failure("邮箱或密码错误");
-            }
-            userMapper.deleteUser(email);
+            userMapper.deleteUserFavorites(userId);
+            userMapper.deleteUserSearchRecords(userId);
+            userMapper.deleteUser(userId);
             return ApiResult.success(null);
         }catch (Exception e){
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
@@ -73,13 +70,13 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public ApiResult modifyPassword(String email, String oldPassword, String newPassword) {
+    public ApiResult modifyPassword(Integer userId, String oldPassword, String newPassword) {
         try{
-            int count = userMapper.judgePassword(email, oldPassword);
+            int count = userMapper.judgePassword(userId, HashUtils.sha256Hash(oldPassword));
             if(count != 1){
-                return ApiResult.failure("邮箱或密码错误");
+                return ApiResult.failure("密码错误");
             }
-            userMapper.updatePassword(newPassword, email);
+            userMapper.updatePassword(HashUtils.sha256Hash(newPassword), userId);
             return ApiResult.success(null);
         }catch (Exception e){
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
@@ -89,9 +86,9 @@ public class UserServiceImpl implements UserService{
 
     @Override
     @Transactional
-    public ApiResult modifyUserName(String email, String password, String newUserName) {
+    public ApiResult modifyUserName(Integer userId, String password, String newUserName) {
         try{
-            int count = userMapper.judgePassword(email, password);
+            int count = userMapper.judgePassword(userId, HashUtils.sha256Hash(password));
             if(count != 1){
                 return ApiResult.failure("邮箱或密码错误");
             }
@@ -99,7 +96,7 @@ public class UserServiceImpl implements UserService{
             if(count > 0){
                 return ApiResult.failure("Username already in use");
             }
-            userMapper.updateUserName(email, newUserName);
+            userMapper.updateUserName(userId, newUserName);
             return ApiResult.success(null);
         }catch (Exception e){
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
@@ -110,11 +107,14 @@ public class UserServiceImpl implements UserService{
     @Override
     public ApiResult userLogin(String email, String password) {
         try{
-            int count = userMapper.judgePassword(email, password);
+            Integer userId = userMapper.getUserId(email);
+            if(userId == null){
+                return ApiResult.failure("账户名或密码错误！");
+            }
+            int count = userMapper.judgePassword(userId, HashUtils.sha256Hash(password));
             if(count != 1){
                 return ApiResult.failure("账户名或密码错误！");
             }else{
-                Integer userId = userMapper.getUserId(email);
                 return ApiResult.success(userId);
             }
         }catch (Exception e){
@@ -342,5 +342,14 @@ public class UserServiceImpl implements UserService{
             gamesForFrontEnd.add(gameForFrontEnd);
         }
         return gamesForFrontEnd;
+    }
+
+    @Override
+    public ApiResult getUserInfo(Integer userId) {
+        HashMap<String, String> userInfo = new HashMap<>();
+        User user = userMapper.getUserInfo(userId);
+        userInfo.put("userName", user.getUserName());
+        userInfo.put("email", user.getEmail());
+        return ApiResult.success(userInfo);
     }
 }
