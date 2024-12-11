@@ -83,4 +83,8 @@ public interface UserMapper {
     // 根据appId获取游戏
     @Select("select * from games where app_id=#{appId}")
     public Game getGameByAppId(int appId);
+
+    // 返回recommendations * estimated_owners 最高的前5个游戏
+    @Select("select * from games order by recommendations * estimated_owners desc limit 5")
+    public List<Game> getTopHotGames();
 }

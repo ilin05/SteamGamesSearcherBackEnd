@@ -36,7 +36,6 @@ public class UserServiceImpl implements UserService{
                 return ApiResult.failure("Email already in use");
                 //throw new RuntimeException("Email already registered");
             }
-            System.out.println("hello2");
             String userName = user.getUserName();
             System.out.println(userName);
             int count2 = userMapper.checkUserName(userName);
@@ -46,11 +45,8 @@ public class UserServiceImpl implements UserService{
                 //throw new RuntimeException("User name already exists");
             }
             //System.out.println("count2: " + count2);
-
-            System.out.println("hello3");
             userMapper.openAccount(userName, user.getPassword(), email);
             User newUser = userMapper.getUserByEmail(email);
-            System.out.println("hello4");
             return ApiResult.success(newUser);
         }catch (Exception e){
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
@@ -149,51 +145,8 @@ public class UserServiceImpl implements UserService{
             userMapper.saveSearchRecord(userId, query, tags);
             List<Game> games = elasticSearchService.comprehensiveSearch(query, tags, query, supportLanguages, lowestPrice, highestPrice, winSupport, linuxSupport, macSupport);
             // return ApiResult.success(games);
-
             // 如果下面的代码更方便前端展示数据的话，可以使用下面的代码
-            List<GameForFrontEnd> gamesForFrontEnd = new ArrayList<>();
-            for(Game game : games){
-                GameForFrontEnd gameForFrontEnd = new GameForFrontEnd();
-                gameForFrontEnd.setAppId(game.getAppId());
-                gameForFrontEnd.setTitle(game.getTitle());
-                gameForFrontEnd.setReleasedDate(game.getReleasedDate());
-                gameForFrontEnd.setWin(game.isWin());
-                gameForFrontEnd.setMac(game.isMac());
-                gameForFrontEnd.setLinux(game.isLinux());
-                gameForFrontEnd.setPrice(game.getPrice());
-                if(game.getTags() != null){
-                    gameForFrontEnd.setTags(List.of(game.getTags().split(", ")));
-                }
-                if(game.getSupportLanguage() != null){
-                    gameForFrontEnd.setSupportLanguage(List.of(game.getSupportLanguage().split(", ")));
-                }
-                gameForFrontEnd.setWebsite(game.getWebsite());
-                gameForFrontEnd.setHeaderImage(game.getHeaderImage());
-                gameForFrontEnd.setRecommendations(game.getRecommendations());
-                gameForFrontEnd.setPositive(game.getPositive());
-                gameForFrontEnd.setNegative(game.getNegative());
-                gameForFrontEnd.setEstimatedOwners(game.getEstimatedOwners());
-                if(game.getScreenshots() != null){
-                    gameForFrontEnd.setScreenshots(List.of(game.getScreenshots().split(", ")));
-                }
-                gameForFrontEnd.setDescription(game.getDescription());
-                if(game.getMovies() != null){
-                    gameForFrontEnd.setMovies(List.of(game.getMovies().split(", ")));
-                }
-                if(game.getDevelopers() != null){
-                    gameForFrontEnd.setDevelopers(List.of(game.getDevelopers().split(", ")));
-                }
-                if(game.getPublishers() != null){
-                    gameForFrontEnd.setPublishers(List.of(game.getPublishers().split(", ")));
-                }
-                if(game.getCategories() != null){
-                    gameForFrontEnd.setCategories(List.of(game.getCategories().split(", ")));
-                }
-                if(game.getGenres() != null){
-                    gameForFrontEnd.setGenres(List.of(game.getGenres().split(", ")));
-                }
-                gamesForFrontEnd.add(gameForFrontEnd);
-            }
+            List<GameForFrontEnd> gamesForFrontEnd = transferEntity(games);
             return ApiResult.success(gamesForFrontEnd);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -232,49 +185,7 @@ public class UserServiceImpl implements UserService{
             // return ApiResult.success(games);
 
             // 如果下面的代码更方便前端展示数据的话，可以使用下面的代码
-            List<GameForFrontEnd> gamesForFrontEnd = new ArrayList<>();
-            for(Game game : games){
-                GameForFrontEnd gameForFrontEnd = new GameForFrontEnd();
-                gameForFrontEnd.setAppId(game.getAppId());
-                gameForFrontEnd.setTitle(game.getTitle());
-                gameForFrontEnd.setReleasedDate(game.getReleasedDate());
-                gameForFrontEnd.setWin(game.isWin());
-                gameForFrontEnd.setMac(game.isMac());
-                gameForFrontEnd.setLinux(game.isLinux());
-                gameForFrontEnd.setPrice(game.getPrice());
-                if(game.getTags() != null){
-                    gameForFrontEnd.setTags(List.of(game.getTags().split(", ")));
-                }
-                if(game.getSupportLanguage() != null){
-                    gameForFrontEnd.setSupportLanguage(List.of(game.getSupportLanguage().split(", ")));
-                }
-                gameForFrontEnd.setWebsite(game.getWebsite());
-                gameForFrontEnd.setHeaderImage(game.getHeaderImage());
-                gameForFrontEnd.setRecommendations(game.getRecommendations());
-                gameForFrontEnd.setPositive(game.getPositive());
-                gameForFrontEnd.setNegative(game.getNegative());
-                gameForFrontEnd.setEstimatedOwners(game.getEstimatedOwners());
-                if(game.getScreenshots() != null){
-                    gameForFrontEnd.setScreenshots(List.of(game.getScreenshots().split(", ")));
-                }
-                gameForFrontEnd.setDescription(game.getDescription());
-                if(game.getMovies() != null){
-                    gameForFrontEnd.setMovies(List.of(game.getMovies().split(", ")));
-                }
-                if(game.getDevelopers() != null){
-                    gameForFrontEnd.setDevelopers(List.of(game.getDevelopers().split(", ")));
-                }
-                if(game.getPublishers() != null){
-                    gameForFrontEnd.setPublishers(List.of(game.getPublishers().split(", ")));
-                }
-                if(game.getCategories() != null){
-                    gameForFrontEnd.setCategories(List.of(game.getCategories().split(", ")));
-                }
-                if(game.getGenres() != null){
-                    gameForFrontEnd.setGenres(List.of(game.getGenres().split(", ")));
-                }
-                gamesForFrontEnd.add(gameForFrontEnd);
-            }
+            List<GameForFrontEnd> gamesForFrontEnd = transferEntity(games);
             return ApiResult.success(gamesForFrontEnd);
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -315,18 +226,24 @@ public class UserServiceImpl implements UserService{
                     }
                 }
             }
-
-            tags.sort((tag1, tag2) -> tagMap.get(tag2) - tagMap.get(tag1));
-            // 如果tags超过十个，则只保留前十个
-            if(tags.size() > 10){
-                tags = tags.subList(0, 10);
+            List<Game> recommendedGames = new ArrayList<>();
+            if(!tags.isEmpty()){
+                tags.sort((tag1, tag2) -> tagMap.get(tag2) - tagMap.get(tag1));
+                // 如果tags超过十个，则只保留前十个
+                if(tags.size() > 10){
+                    tags = tags.subList(0, 10);
+                }
+                StringBuilder query = new StringBuilder();
+                for(String tag : tags){
+                    query.append(tag).append(", ");
+                }
+                recommendedGames = elasticSearchService.searchGamesByTags(query.toString());
+            } else {
+                System.out.println("No tags");
+                recommendedGames = userMapper.getTopHotGames();
             }
-            StringBuilder query = new StringBuilder();
-            for(String tag : tags){
-                query.append(tag).append(", ");
-            }
-            List<Game> recommendedGames = elasticSearchService.searchGamesByTags(query.toString());
-            return ApiResult.success(recommendedGames);
+            List<GameForFrontEnd> gamesForFrontEnd = transferEntity(recommendedGames);
+            return ApiResult.success(gamesForFrontEnd);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -337,6 +254,36 @@ public class UserServiceImpl implements UserService{
     public ApiResult getGameDetail(Integer appId) throws IOException {
         try {
             Game game = userMapper.getGameByAppId(appId);
+            List<Game> games = new ArrayList<>();
+            games.add(game);
+            List<GameForFrontEnd> gamesForFrontEndList = transferEntity(games);
+            GameForFrontEnd gameForFrontEnd = gamesForFrontEndList.get(0);
+            return ApiResult.success(gameForFrontEnd);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        // return null;
+    }
+
+    @Override
+    public ApiResult searchByTitle(String query) throws IOException {
+        try{
+            if(!query.matches("^[a-zA-Z0-9\\s]+$")){
+                query = YouDaoTranslator.translate(query);
+            }
+            List<Game> games = elasticSearchService.searchGamesByTitle(query);
+            List<GameForFrontEnd> gamesForFrontEnd = transferEntity(games);
+            return ApiResult.success(gamesForFrontEnd);
+        }
+        catch (Exception e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public List<GameForFrontEnd> transferEntity(List<Game> games) {
+        List<GameForFrontEnd> gamesForFrontEnd = new ArrayList<>();
+        for(Game game : games){
             GameForFrontEnd gameForFrontEnd = new GameForFrontEnd();
             gameForFrontEnd.setAppId(game.getAppId());
             gameForFrontEnd.setTitle(game.getTitle());
@@ -376,67 +323,8 @@ public class UserServiceImpl implements UserService{
             if(game.getGenres() != null){
                 gameForFrontEnd.setGenres(List.of(game.getGenres().split(", ")));
             }
-            return ApiResult.success(gameForFrontEnd);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+            gamesForFrontEnd.add(gameForFrontEnd);
         }
-        // return null;
-    }
-
-    @Override
-    public ApiResult searchByTitle(String query) throws IOException {
-        try{
-            if(!query.matches("^[a-zA-Z0-9\\s]+$")){
-                query = YouDaoTranslator.translate(query);
-            }
-            List<Game> games = elasticSearchService.searchGamesByTitle(query);
-            List<GameForFrontEnd> gamesForFrontEnd = new ArrayList<>();
-            for(Game game : games){
-                GameForFrontEnd gameForFrontEnd = new GameForFrontEnd();
-                gameForFrontEnd.setAppId(game.getAppId());
-                gameForFrontEnd.setTitle(game.getTitle());
-                gameForFrontEnd.setReleasedDate(game.getReleasedDate());
-                gameForFrontEnd.setWin(game.isWin());
-                gameForFrontEnd.setMac(game.isMac());
-                gameForFrontEnd.setLinux(game.isLinux());
-                gameForFrontEnd.setPrice(game.getPrice());
-                if(game.getTags() != null){
-                    gameForFrontEnd.setTags(List.of(game.getTags().split(", ")));
-                }
-                if(game.getSupportLanguage() != null){
-                    gameForFrontEnd.setSupportLanguage(List.of(game.getSupportLanguage().split(", ")));
-                }
-                gameForFrontEnd.setWebsite(game.getWebsite());
-                gameForFrontEnd.setHeaderImage(game.getHeaderImage());
-                gameForFrontEnd.setRecommendations(game.getRecommendations());
-                gameForFrontEnd.setPositive(game.getPositive());
-                gameForFrontEnd.setNegative(game.getNegative());
-                gameForFrontEnd.setEstimatedOwners(game.getEstimatedOwners());
-                if(game.getScreenshots() != null){
-                    gameForFrontEnd.setScreenshots(List.of(game.getScreenshots().split(", ")));
-                }
-                gameForFrontEnd.setDescription(game.getDescription());
-                if(game.getMovies() != null){
-                    gameForFrontEnd.setMovies(List.of(game.getMovies().split(", ")));
-                }
-                if(game.getDevelopers() != null){
-                    gameForFrontEnd.setDevelopers(List.of(game.getDevelopers().split(", ")));
-                }
-                if(game.getPublishers() != null){
-                    gameForFrontEnd.setPublishers(List.of(game.getPublishers().split(", ")));
-                }
-                if(game.getCategories() != null){
-                    gameForFrontEnd.setCategories(List.of(game.getCategories().split(", ")));
-                }
-                if(game.getGenres() != null){
-                    gameForFrontEnd.setGenres(List.of(game.getGenres().split(", ")));
-                }
-                gamesForFrontEnd.add(gameForFrontEnd);
-            }
-            return ApiResult.success(gamesForFrontEnd);
-        }
-        catch (Exception e){
-            throw new RuntimeException(e);
-        }
+        return gamesForFrontEnd;
     }
 }

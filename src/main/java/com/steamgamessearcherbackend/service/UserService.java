@@ -4,6 +4,7 @@ import com.steamgamessearcherbackend.entities.*;
 import com.steamgamessearcherbackend.utils.ApiResult;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.ThreadPoolExecutor;
 
 public interface UserService {
@@ -41,4 +42,6 @@ public interface UserService {
     ApiResult getGameDetail(Integer appId) throws IOException;
 
     ApiResult searchByTitle(String query) throws IOException;
+
+    List<GameForFrontEnd> transferEntity(List<Game> games);
 }
