@@ -124,33 +124,53 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public ApiResult userSearch(Integer userId, String query, String specifiedTags, String supportLanguages, Double lowestPrice, Double highestPrice, Boolean winSupport, Boolean linuxSupport, Boolean macSupport, Boolean isTitle) {
+    public ApiResult userSearch(Integer userId, String query, List<String> tags, String supportLanguages, Double lowestPrice, Double highestPrice, Boolean winSupport, Boolean linuxSupport, Boolean macSupport, Boolean isTitle) {
         try{
-            if(!query.matches("^[a-zA-Z0-9\\s]+$")){
-                query = YouDaoTranslator.translate(query);
-            }
             if(isTitle){
+                if(!query.matches("^[a-zA-Z0-9\\s]+$")){
+                    query = YouDaoTranslator.translate(query);
+                }
                 List<Game> games = elasticSearchService.searchGamesByTitle(query);
                 // return ApiResult.success(games);
                 // 如果下面的代码更方便前端展示数据的话，可以使用下面的代码
                 List<GameForFrontEnd> gamesForFrontEnd = transferEntity(games);
                 return ApiResult.success(gamesForFrontEnd);
             }else{
-                // System.out.println("hello1");
-                // 如果输入的不是英文的话，就调用有道翻译API进行翻译
-                // userMapper.saveSearchRecord(userId, query);
-                Process process = Runtime.getRuntime().exec("python.exe src/main/python/deepseek.py \"" + query + "\"");
-                InputStream inputStream = process.getInputStream();
-                process.waitFor();
-                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                byte[] buffer = new byte[1024];
-                int len = -1;
-                while((len = inputStream.read(buffer)) != -1){
-                    outputStream.write(buffer, 0, len);
+                List<Game> games = new ArrayList<>();
+                String extractedTags;
+                if(!query.isEmpty()){
+                    if(!query.matches("^[a-zA-Z0-9\\s]+$")){
+                        query = YouDaoTranslator.translate(query);
+                    }
+                    // System.out.println("hello1");
+                    // 如果输入的不是英文的话，就调用有道翻译API进行翻译
+                    // userMapper.saveSearchRecord(userId, query);
+                    Process process = Runtime.getRuntime().exec("python.exe src/main/python/deepseek.py \"" + query + "\"");
+                    InputStream inputStream = process.getInputStream();
+                    process.waitFor();
+                    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                    byte[] buffer = new byte[1024];
+                    int len = -1;
+                    while((len = inputStream.read(buffer)) != -1){
+                        outputStream.write(buffer, 0, len);
+                    }
+                    extractedTags = outputStream.toString();
+                    for(String tag : tags){
+                        if(!extractedTags.contains(tag)){
+                            extractedTags += ", " + tag;
+                        }
+                    }
+                    games = elasticSearchService.comprehensiveSearch(query, extractedTags, query, supportLanguages, lowestPrice, highestPrice, winSupport, linuxSupport, macSupport);
+                }else{
+                    extractedTags = "";
+                    for(String tag : tags){
+                        extractedTags += tag + ", ";
+                    }
+                    games = elasticSearchService.searchWithoutQuery(extractedTags, extractedTags, supportLanguages, lowestPrice, highestPrice, winSupport, linuxSupport, macSupport);
                 }
-                String tags = outputStream.toString();
-                userMapper.saveSearchRecord(userId, query, tags);
-                List<Game> games = elasticSearchService.comprehensiveSearch(query, tags, query, supportLanguages, lowestPrice, highestPrice, winSupport, linuxSupport, macSupport);
+                if(!Objects.equals(extractedTags, "")){
+                    userMapper.saveSearchRecord(userId, query, extractedTags);
+                }
                 // return ApiResult.success(games);
                 // 如果下面的代码更方便前端展示数据的话，可以使用下面的代码
                 List<GameForFrontEnd> gamesForFrontEnd = transferEntity(games);

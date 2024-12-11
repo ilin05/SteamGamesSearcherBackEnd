@@ -25,7 +25,7 @@ public interface UserService {
     ApiResult userLogin(String email, String password);
 
     // 用户搜索
-    ApiResult userSearch(Integer userId, String query, String specifiedTags, String supportLanguages, Double lowestPrice, Double highestPrice, Boolean winSupport, Boolean linuxSupport, Boolean macSupport, Boolean isTitle);
+    ApiResult userSearch(Integer userId, String query, List<String> tags, String supportLanguages, Double lowestPrice, Double highestPrice, Boolean winSupport, Boolean linuxSupport, Boolean macSupport, Boolean isTitle);
 
     // 收藏商品
     ApiResult favoriteGame(Integer userId, Integer appId);

@@ -15,4 +15,6 @@ public interface ElasticSearchService {
     public List<Game> searchGamesByDescription(String query) throws IOException;
 
     public List<Game> comprehensiveSearch(String title, String tags, String description, String supportLanguages, Double lowestPrice, Double highestPrice, Boolean winSupport, Boolean linuxSupport, Boolean macSupport) throws IOException;
+
+    public List<Game> searchWithoutQuery(String tags, String description, String supportLanguages, Double lowestPrice, Double highestPrice, Boolean winSupport, Boolean linuxSupport, Boolean macSupport) throws IOException;
 }

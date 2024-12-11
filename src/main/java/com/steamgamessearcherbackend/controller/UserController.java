@@ -115,15 +115,11 @@ public class UserController {
         System.out.println("supportLanguages: " + supportLanguages);
         System.out.println("lowestPrice: " + lowestPrice);
         System.out.println("highestPrice: " + highestPrice);
-        String specifiedTags = "";
-        for (String tag : tags) {
-            specifiedTags += tag + ", ";
-        }
         String supportLanguagesStr = "";
         for (String language : supportLanguages) {
             supportLanguagesStr += language + ", ";
         }
-        return userService.userSearch(userId, query, specifiedTags, supportLanguagesStr, lowestPrice, highestPrice, winSupport, linuxSupport, macSupport, isTitle);
+        return userService.userSearch(userId, query, tags, supportLanguagesStr, lowestPrice, highestPrice, winSupport, linuxSupport, macSupport, isTitle);
     }
 
     // 根据appId获取游戏详细信息

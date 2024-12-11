@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Function;
 
 @Service
@@ -140,6 +141,71 @@ public class ElasticSearchServiceImpl implements ElasticSearchService {
                     b.must(m -> m.match(d -> d.field("description").query(description).fuzziness("AUTO")));
                     b.must(m -> m.match(t -> t.field("title").query(title).fuzziness("AUTO")));
                     if(supportLanguages != null) {
+                        b.must(m -> m.match(t -> t.field("supportLanguage").query(supportLanguages).fuzziness("AUTO")));
+                    }
+                    if (lowestPrice != null) {
+                        UntypedRangeQuery.Builder lowestPriceFilter = new UntypedRangeQuery.Builder();
+                        lowestPriceFilter.field("price").gte(JsonData.of(lowestPrice)).lte(JsonData.of(highestPrice));
+                        UntypedRangeQuery lowestPriceQuery = lowestPriceFilter.build();
+                        b.must(lowestPriceQuery._toRangeQuery()._toQuery());
+                        //b.must(m -> m.range((Function<RangeQuery.Builder, ObjectBuilder<RangeQuery>>) lowestPriceFilter.build()));
+                    }
+                    if (highestPrice != null) {
+                        UntypedRangeQuery.Builder highestPriceFilter = new UntypedRangeQuery.Builder();
+                        highestPriceFilter.field("price").lte(JsonData.of(highestPrice));
+                        UntypedRangeQuery highestPriceQuery = highestPriceFilter.build();
+                        b.must(highestPriceQuery._toRangeQuery()._toQuery());
+                        //b.must(m -> m.range((Function<RangeQuery.Builder, ObjectBuilder<RangeQuery>>) highestPriceFilter.build()));
+                    }
+                    if(winSupport) {
+                        b.must(m -> m.match(t -> t.field("win").query(true)));
+                    }
+                    if(linuxSupport) {
+                        b.must(m -> m.match(t -> t.field("linux").query(true)));
+                    }
+                    if(macSupport) {
+                        b.must(m -> m.match(t -> t.field("mac").query(true)));
+                    }
+                    return b;
+                }))
+//                .query(q-> q.match(m-> m.field("title").query(title)))
+//                .query(q-> q.match(m-> m.field("tags").query(tags)))
+//                .query(q-> q.match(m-> m.field("description").query(description)))
+//                .query(q-> q.match(m-> m.field("supportLanguage").query(supportLanguages)))
+                //.size(10)
+                .build();
+        SearchResponse<Game> searchResponse = elasticsearchClient.search(searchRequest, Game.class);
+        for(Hit<Game> hit : searchResponse.hits().hits()) {
+            results.add(hit.source());
+        }
+        return results;
+    }
+
+    @Override
+    public List<Game> searchWithoutQuery(String tags, String description, String supportLanguages, Double lowestPrice, Double highestPrice, Boolean winSupport, Boolean linuxSupport, Boolean macSupport) throws IOException {
+        System.out.println("tags: " + tags);
+        System.out.println("description: " + description);
+        System.out.println("supportLanguages: " + supportLanguages);
+        System.out.println("lowestPrice: " + lowestPrice);
+        System.out.println("highestPrice: " + highestPrice);
+        System.out.println("winSupport: " + winSupport);
+        System.out.println("linuxSupport: " + linuxSupport);
+        System.out.println("macSupport: " + macSupport);
+        List<Game> results = new ArrayList<>();
+        // RangeQueryBuilder rangeQuery = QueryBuilders.rangeQuery("age");
+        SearchRequest searchRequest = new SearchRequest.Builder()
+                .index("games")
+                .query(q -> q.bool(b -> {
+                    if(!Objects.equals(tags, "")) {
+                        System.out.println("tags: " + tags);
+                        b.must(m -> m.match(t -> t.field("tags").query(tags).fuzziness("AUTO")));
+                    }
+                    if(!Objects.equals(description, "")) {
+                        System.out.println("description: " + description);
+                        b.must(m -> m.match(d -> d.field("description").query(description).fuzziness("AUTO")));
+                    }
+                    if(!supportLanguages.isEmpty()) {
+                        System.out.println("supportLanguages: " + supportLanguages);
                         b.must(m -> m.match(t -> t.field("supportLanguage").query(supportLanguages).fuzziness("AUTO")));
                     }
                     if (lowestPrice != null) {
