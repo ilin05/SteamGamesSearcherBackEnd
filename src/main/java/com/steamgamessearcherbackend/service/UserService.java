@@ -39,4 +39,6 @@ public interface UserService {
     ApiResult recommendGames(Integer userId) throws IOException;
 
     ApiResult getGameDetail(Integer appId) throws IOException;
+
+    ApiResult searchByTitle(String query) throws IOException;
 }

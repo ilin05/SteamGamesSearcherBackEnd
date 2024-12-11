@@ -129,4 +129,10 @@ public class UserController {
     public ApiResult getGameDetail(@RequestParam Integer appId) throws IOException {
         return userService.getGameDetail(appId);
     }
+
+    // 根据title精确搜索
+    @GetMapping("/searchByTitle")
+    public ApiResult searchByTitle(@RequestParam String title) throws IOException {
+        return userService.searchByTitle(title);
+    }
 }
