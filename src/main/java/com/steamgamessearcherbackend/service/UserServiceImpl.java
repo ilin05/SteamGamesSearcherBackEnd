@@ -124,30 +124,38 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public ApiResult userSearch(Integer userId, String query, String specifiedTags, String supportLanguages, Double lowestPrice, Double highestPrice, Boolean winSupport, Boolean linuxSupport, Boolean macSupport) {
+    public ApiResult userSearch(Integer userId, String query, String specifiedTags, String supportLanguages, Double lowestPrice, Double highestPrice, Boolean winSupport, Boolean linuxSupport, Boolean macSupport, Boolean isTitle) {
         try{
-            // System.out.println("hello1");
-            // 如果输入的不是英文的话，就调用有道翻译API进行翻译
             if(!query.matches("^[a-zA-Z0-9\\s]+$")){
                 query = YouDaoTranslator.translate(query);
             }
-            // userMapper.saveSearchRecord(userId, query);
-            Process process = Runtime.getRuntime().exec("python.exe src/main/python/deepseek.py \"" + query + "\"");
-            InputStream inputStream = process.getInputStream();
-            process.waitFor();
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            byte[] buffer = new byte[1024];
-            int len = -1;
-            while((len = inputStream.read(buffer)) != -1){
-                outputStream.write(buffer, 0, len);
+            if(isTitle){
+                List<Game> games = elasticSearchService.searchGamesByTitle(query);
+                // return ApiResult.success(games);
+                // 如果下面的代码更方便前端展示数据的话，可以使用下面的代码
+                List<GameForFrontEnd> gamesForFrontEnd = transferEntity(games);
+                return ApiResult.success(gamesForFrontEnd);
+            }else{
+                // System.out.println("hello1");
+                // 如果输入的不是英文的话，就调用有道翻译API进行翻译
+                // userMapper.saveSearchRecord(userId, query);
+                Process process = Runtime.getRuntime().exec("python.exe src/main/python/deepseek.py \"" + query + "\"");
+                InputStream inputStream = process.getInputStream();
+                process.waitFor();
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                byte[] buffer = new byte[1024];
+                int len = -1;
+                while((len = inputStream.read(buffer)) != -1){
+                    outputStream.write(buffer, 0, len);
+                }
+                String tags = outputStream.toString();
+                userMapper.saveSearchRecord(userId, query, tags);
+                List<Game> games = elasticSearchService.comprehensiveSearch(query, tags, query, supportLanguages, lowestPrice, highestPrice, winSupport, linuxSupport, macSupport);
+                // return ApiResult.success(games);
+                // 如果下面的代码更方便前端展示数据的话，可以使用下面的代码
+                List<GameForFrontEnd> gamesForFrontEnd = transferEntity(games);
+                return ApiResult.success(gamesForFrontEnd);
             }
-            String tags = outputStream.toString();
-            userMapper.saveSearchRecord(userId, query, tags);
-            List<Game> games = elasticSearchService.comprehensiveSearch(query, tags, query, supportLanguages, lowestPrice, highestPrice, winSupport, linuxSupport, macSupport);
-            // return ApiResult.success(games);
-            // 如果下面的代码更方便前端展示数据的话，可以使用下面的代码
-            List<GameForFrontEnd> gamesForFrontEnd = transferEntity(games);
-            return ApiResult.success(gamesForFrontEnd);
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (InterruptedException e) {
@@ -185,8 +193,16 @@ public class UserServiceImpl implements UserService{
             // return ApiResult.success(games);
 
             // 如果下面的代码更方便前端展示数据的话，可以使用下面的代码
-            List<GameForFrontEnd> gamesForFrontEnd = transferEntity(games);
-            return ApiResult.success(gamesForFrontEnd);
+            // List<GameForFrontEnd> gamesForFrontEnd = transferEntity(games);
+            List<HashMap<String, String>> results = new ArrayList<>();
+            for(Game game : games){
+                HashMap<String, String> result = new HashMap<>();
+                result.put("appId", game.getAppId().toString());
+                result.put("title", game.getTitle());
+                result.put("headerImage", game.getHeaderImage());
+                results.add(result);
+            }
+            return ApiResult.success(results);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

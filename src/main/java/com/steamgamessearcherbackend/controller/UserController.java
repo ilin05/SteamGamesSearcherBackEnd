@@ -102,7 +102,7 @@ public class UserController {
     // 用户搜索
     @GetMapping("/search")
     public ApiResult userSearch(@RequestParam Integer userId, @RequestParam String query, @RequestParam List<String> tags, @RequestParam List<String> supportLanguages, @RequestParam Double lowestPrice, @RequestParam Double highestPrice,
-                                @RequestParam Boolean winSupport, @RequestParam Boolean macSupport, @RequestParam Boolean linuxSupport) {
+                                @RequestParam Boolean winSupport, @RequestParam Boolean macSupport, @RequestParam Boolean linuxSupport, @RequestParam Boolean isTitle) {
 //        Integer userId = Integer.parseInt(searchInfo.get("userId").toString());
 //        String query = searchInfo.get("query").toString();
 //        List<String> tags = (List<String>) searchInfo.get("tags");
@@ -121,7 +121,7 @@ public class UserController {
         for (String language : supportLanguages) {
             supportLanguagesStr += language + ", ";
         }
-        return userService.userSearch(userId, query, specifiedTags, supportLanguagesStr, lowestPrice, highestPrice, winSupport, linuxSupport, macSupport);
+        return userService.userSearch(userId, query, specifiedTags, supportLanguagesStr, lowestPrice, highestPrice, winSupport, linuxSupport, macSupport, isTitle);
     }
 
     // 根据appId获取游戏详细信息
