@@ -140,7 +140,7 @@ public class ElasticSearchServiceImpl implements ElasticSearchService {
                     b.must(m -> m.match(t -> t.field("tags").query(tags).fuzziness("AUTO")));
                     b.must(m -> m.match(d -> d.field("description").query(description).fuzziness("AUTO")));
                     b.must(m -> m.match(t -> t.field("title").query(title).fuzziness("AUTO")));
-                    if(supportLanguages != null) {
+                    if(!supportLanguages.isEmpty()) {
                         b.must(m -> m.match(t -> t.field("supportLanguage").query(supportLanguages).fuzziness("AUTO")));
                     }
                     if (lowestPrice != null) {

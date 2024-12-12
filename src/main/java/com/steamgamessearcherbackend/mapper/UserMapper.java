@@ -99,4 +99,5 @@ public interface UserMapper {
     // 删除用户搜索记录
     @Delete("delete from search_records where user_id=#{userId}")
     public int deleteUserSearchRecords(int userId);
+
 }

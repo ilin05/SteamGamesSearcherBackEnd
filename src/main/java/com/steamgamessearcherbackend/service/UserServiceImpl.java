@@ -160,6 +160,7 @@ public class UserServiceImpl implements UserService{
                             extractedTags += ", " + tag;
                         }
                     }
+                    System.out.println("hello1");
                     games = elasticSearchService.comprehensiveSearch(query, extractedTags, query, supportLanguages, lowestPrice, highestPrice, winSupport, linuxSupport, macSupport);
                 }else{
                     extractedTags = "";
