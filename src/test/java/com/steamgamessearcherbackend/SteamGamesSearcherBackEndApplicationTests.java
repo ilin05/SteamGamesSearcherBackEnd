@@ -96,15 +96,26 @@ class SteamGamesSearcherBackEndApplicationTests {
         }
         Process process = Runtime.getRuntime().exec("python.exe src/main/python/getGuidance.py");
         // Process process = Runtime.getRuntime().exec("python.exe src/main/python/getGuidance.py \"" + content + "\"");
-        InputStream inputStream = process.getInputStream();
+        // InputStream inputStream = process.getInputStream();
         process.waitFor();
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        byte[] buffer = new byte[1024];
-        int len = -1;
-        while ((len = inputStream.read(buffer)) != -1) {
-            outputStream.write(buffer, 0, len);
+
+        // 从src/main/python/guidance.txt中读取guidance
+        File guidanceFile = new File("src/main/python/guidance.txt");
+        StringBuilder guidance = new StringBuilder();
+        try (BufferedReader reader = new BufferedReader(new FileReader(guidanceFile))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                guidance.append(line).append("\n");
+            }
         }
-        System.out.println(outputStream);
+        System.out.println(guidance);
+//        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+//        byte[] buffer = new byte[1024];
+//        int len = -1;
+//        while ((len = inputStream.read(buffer)) != -1) {
+//            outputStream.write(buffer, 0, len);
+//        }
+//        System.out.println(outputStream);
     }
 
     @Test

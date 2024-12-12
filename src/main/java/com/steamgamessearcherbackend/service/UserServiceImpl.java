@@ -289,29 +289,10 @@ public class UserServiceImpl implements UserService{
     public ApiResult getGameDetail(Integer appId) throws IOException {
         try {
             Game game = userMapper.getGameByAppId(appId);
-            String title = game.getTitle();
-            String content = "The title: " + title + "The tags: " + game.getTags() + "; The description: " + game.getDescription() + "; The categories: " + game.getCategories() + "; The genres: " + game.getGenres();
-            // 将content存入src/main/python/content.txt
-            File file = new File("src/main/python/content.txt");
-            try (FileWriter writer = new FileWriter(file)) {
-                writer.write(content);
-            }
-            Process process = Runtime.getRuntime().exec("python.exe src/main/python/getGuidance.py");
-            // Process process = Runtime.getRuntime().exec("python.exe src/main/python/getGuidance.py \"" + content + "\"");
-            InputStream inputStream = process.getInputStream();
-            process.waitFor();
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            byte[] buffer = new byte[1024];
-            int len = -1;
-            while ((len = inputStream.read(buffer)) != -1) {
-                outputStream.write(buffer, 0, len);
-            }
-            String guidance = outputStream.toString();
             List<Game> games = new ArrayList<>();
             games.add(game);
             List<GameForFrontEnd> gamesForFrontEndList = transferEntity(games);
             GameForFrontEnd gameForFrontEnd = gamesForFrontEndList.get(0);
-            gameForFrontEnd.setGuidance(guidance);
             return ApiResult.success(gameForFrontEnd);
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -393,5 +374,36 @@ public class UserServiceImpl implements UserService{
         userInfo.put("userName", user.getUserName());
         userInfo.put("email", user.getEmail());
         return ApiResult.success(userInfo);
+    }
+
+    @Override
+    public ApiResult getGuidance(Integer appId) throws IOException {
+        try{
+            Game game = userMapper.getGameByAppId(appId);
+            String title = game.getTitle();
+            String content = "The title: " + title + "The tags: " + game.getTags() + "; The description: " + game.getDescription() + "; The categories: " + game.getCategories() + "; The genres: " + game.getGenres();
+            // 将content存入src/main/python/content.txt
+            File file = new File("src/main/python/content.txt");
+            try (FileWriter writer = new FileWriter(file)) {
+                writer.write(content);
+            }
+            Process process = Runtime.getRuntime().exec("python.exe src/main/python/getGuidance.py");
+            process.waitFor();
+            System.out.println("hello");
+            File guidanceFile = new File("src/main/python/guidance.txt");
+            StringBuilder guidance = new StringBuilder();
+            try (BufferedReader reader = new BufferedReader(new FileReader(guidanceFile))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    guidance.append(line).append("\n");
+                }
+            }
+            System.out.println(guidance.toString());
+            return ApiResult.success(guidance.toString());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

@@ -46,4 +46,6 @@ public interface UserService {
     List<GameForFrontEnd> transferEntity(List<Game> games);
 
     ApiResult getUserInfo(Integer userId);
+
+    ApiResult getGuidance(Integer appId) throws IOException;
 }

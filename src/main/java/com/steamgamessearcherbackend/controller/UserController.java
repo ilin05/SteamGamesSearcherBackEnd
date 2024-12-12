@@ -139,4 +139,10 @@ public class UserController {
     public ApiResult getUserInfo(@RequestParam Integer userId) {
         return userService.getUserInfo(userId);
     }
+
+    // 获取游戏指引
+    @GetMapping("/getGuidance")
+    public ApiResult getGuidance(@RequestParam Integer appId) throws IOException {
+        return userService.getGuidance(appId);
+    }
 }

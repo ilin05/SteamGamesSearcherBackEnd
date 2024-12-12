@@ -18,9 +18,12 @@ response = client.chat.completions.create(
     model="deepseek-chat",
     messages=[
         {"role": "system", "content": "You are a helpful assistant"},
-        {"role": "user", "content": "I type in the title, description, tags, categories, genres of the game, please help me generate a guide about this game, complete it in one paragraph. " + content},
+        {"role": "user", "content": "I type in the title, description, tags, categories, genres of the game, please help me generate a guide about this game. " + content},
     ],
     stream=False
 )
+# 把生成的指南写入文件guidance.txt
+with open('src\main\python\guidance.txt', 'w', encoding='utf-8') as file:
+    file.write(response.choices[0].message.content)
 
-print(response.choices[0].message.content)
+# print(response.choices[0].message.content)
