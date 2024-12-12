@@ -9,9 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.*;
 // import java.util.Map;
 
@@ -291,10 +289,29 @@ public class UserServiceImpl implements UserService{
     public ApiResult getGameDetail(Integer appId) throws IOException {
         try {
             Game game = userMapper.getGameByAppId(appId);
+            String title = game.getTitle();
+            String content = "The title: " + title + "The tags: " + game.getTags() + "; The description: " + game.getDescription() + "; The categories: " + game.getCategories() + "; The genres: " + game.getGenres();
+            // 将content存入src/main/python/content.txt
+            File file = new File("src/main/python/content.txt");
+            try (FileWriter writer = new FileWriter(file)) {
+                writer.write(content);
+            }
+            Process process = Runtime.getRuntime().exec("python.exe src/main/python/getGuidance.py");
+            // Process process = Runtime.getRuntime().exec("python.exe src/main/python/getGuidance.py \"" + content + "\"");
+            InputStream inputStream = process.getInputStream();
+            process.waitFor();
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            byte[] buffer = new byte[1024];
+            int len = -1;
+            while ((len = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, len);
+            }
+            String guidance = outputStream.toString();
             List<Game> games = new ArrayList<>();
             games.add(game);
             List<GameForFrontEnd> gamesForFrontEndList = transferEntity(games);
             GameForFrontEnd gameForFrontEnd = gamesForFrontEndList.get(0);
+            gameForFrontEnd.setGuidance(guidance);
             return ApiResult.success(gameForFrontEnd);
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -343,6 +360,10 @@ public class UserServiceImpl implements UserService{
             gameForFrontEnd.setEstimatedOwners(game.getEstimatedOwners());
             if(game.getScreenshots() != null){
                 gameForFrontEnd.setScreenshots(List.of(game.getScreenshots().split(", ")));
+                // 如果screenshots超过十个，则只保留前十个
+                if(gameForFrontEnd.getScreenshots().size() > 10){
+                    gameForFrontEnd.setScreenshots(gameForFrontEnd.getScreenshots().subList(0, 10));
+                }
             }
             gameForFrontEnd.setDescription(game.getDescription());
             if(game.getMovies() != null){

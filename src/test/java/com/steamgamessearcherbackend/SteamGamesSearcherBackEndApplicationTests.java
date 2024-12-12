@@ -14,10 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -87,6 +84,30 @@ class SteamGamesSearcherBackEndApplicationTests {
     }
 
     @Test
+    void testGetGuidance() throws IOException, InterruptedException {
+        Game game = userMapper.getGameByAppId(2358720); //黑神话悟空
+        // System.out.println(game);
+        String title = game.getTitle();
+        String content = "The title: " + title + "The tags: " + game.getTags() + "; The description: " + game.getDescription() + "; The categories: " + game.getCategories() + "; The genres: " + game.getGenres();
+        // 将content存入src/main/python/content.txt
+        File file = new File("src/main/python/content.txt");
+        try (FileWriter writer = new FileWriter(file)) {
+            writer.write(content);
+        }
+        Process process = Runtime.getRuntime().exec("python.exe src/main/python/getGuidance.py");
+        // Process process = Runtime.getRuntime().exec("python.exe src/main/python/getGuidance.py \"" + content + "\"");
+        InputStream inputStream = process.getInputStream();
+        process.waitFor();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        byte[] buffer = new byte[1024];
+        int len = -1;
+        while ((len = inputStream.read(buffer)) != -1) {
+            outputStream.write(buffer, 0, len);
+        }
+        System.out.println(outputStream);
+    }
+
+    @Test
     void testSearchByTitleAndTagsAndDescription() throws IOException, InterruptedException {
         String query = "Galactic Bowling";
         String content = "Shoot vehicles, blow enemies with a special attack, protect your allies and ensure mission success!";
@@ -100,56 +121,56 @@ class SteamGamesSearcherBackEndApplicationTests {
             outputStream.write(buffer, 0, len);
         }
         System.out.println(outputStream);
-        List<Game> games = elasticSearchService.comprehensiveSearch(query, outputStream.toString(), query + outputStream.toString(), null, null, null, null, null, null);
-        List<GameForFrontEnd> gamesForFrontEnd = new ArrayList<>();
-        // System.out.println("共查询到" + games.size() + "个结果");
-        for (Game game : games) {
-            // System.out.println(game);
-            GameForFrontEnd gameForFrontEnd = new GameForFrontEnd();
-            gameForFrontEnd.setAppId(game.getAppId());
-            gameForFrontEnd.setTitle(game.getTitle());
-            gameForFrontEnd.setReleasedDate(game.getReleasedDate());
-            gameForFrontEnd.setWin(game.isWin());
-            gameForFrontEnd.setMac(game.isMac());
-            gameForFrontEnd.setLinux(game.isLinux());
-            gameForFrontEnd.setPrice(game.getPrice());
-            if (game.getTags() != null) {
-                gameForFrontEnd.setTags(List.of(game.getTags().split(", ")));
-            }
-            if (game.getSupportLanguage() != null) {
-                gameForFrontEnd.setSupportLanguage(List.of(game.getSupportLanguage().split(", ")));
-            }
-            gameForFrontEnd.setWebsite(game.getWebsite());
-            gameForFrontEnd.setHeaderImage(game.getHeaderImage());
-            gameForFrontEnd.setRecommendations(game.getRecommendations());
-            gameForFrontEnd.setPositive(game.getPositive());
-            gameForFrontEnd.setNegative(game.getNegative());
-            gameForFrontEnd.setEstimatedOwners(game.getEstimatedOwners());
-            if (game.getScreenshots() != null) {
-                gameForFrontEnd.setScreenshots(List.of(game.getScreenshots().split(", ")));
-            }
-            gameForFrontEnd.setDescription(game.getDescription());
-            if (game.getMovies() != null) {
-                gameForFrontEnd.setMovies(List.of(game.getMovies().split(", ")));
-            }
-            if (game.getDevelopers() != null) {
-                gameForFrontEnd.setDevelopers(List.of(game.getDevelopers().split(", ")));
-            }
-            if (game.getPublishers() != null) {
-                gameForFrontEnd.setPublishers(List.of(game.getPublishers().split(", ")));
-            }
-            if (game.getCategories() != null) {
-                gameForFrontEnd.setCategories(List.of(game.getCategories().split(", ")));
-            }
-            if (game.getGenres() != null) {
-                gameForFrontEnd.setGenres(List.of(game.getGenres().split(", ")));
-            }
-            gamesForFrontEnd.add(gameForFrontEnd);
-        }
-        System.out.println("共查询到" + gamesForFrontEnd.size() + "个结果");
-        for (GameForFrontEnd game : gamesForFrontEnd) {
-            System.out.println(game);
-        }
+//        List<Game> games = elasticSearchService.comprehensiveSearch(query, outputStream.toString(), query + outputStream.toString(), null, null, null, null, null, null);
+//        List<GameForFrontEnd> gamesForFrontEnd = new ArrayList<>();
+//        // System.out.println("共查询到" + games.size() + "个结果");
+//        for (Game game : games) {
+//            // System.out.println(game);
+//            GameForFrontEnd gameForFrontEnd = new GameForFrontEnd();
+//            gameForFrontEnd.setAppId(game.getAppId());
+//            gameForFrontEnd.setTitle(game.getTitle());
+//            gameForFrontEnd.setReleasedDate(game.getReleasedDate());
+//            gameForFrontEnd.setWin(game.isWin());
+//            gameForFrontEnd.setMac(game.isMac());
+//            gameForFrontEnd.setLinux(game.isLinux());
+//            gameForFrontEnd.setPrice(game.getPrice());
+//            if (game.getTags() != null) {
+//                gameForFrontEnd.setTags(List.of(game.getTags().split(", ")));
+//            }
+//            if (game.getSupportLanguage() != null) {
+//                gameForFrontEnd.setSupportLanguage(List.of(game.getSupportLanguage().split(", ")));
+//            }
+//            gameForFrontEnd.setWebsite(game.getWebsite());
+//            gameForFrontEnd.setHeaderImage(game.getHeaderImage());
+//            gameForFrontEnd.setRecommendations(game.getRecommendations());
+//            gameForFrontEnd.setPositive(game.getPositive());
+//            gameForFrontEnd.setNegative(game.getNegative());
+//            gameForFrontEnd.setEstimatedOwners(game.getEstimatedOwners());
+//            if (game.getScreenshots() != null) {
+//                gameForFrontEnd.setScreenshots(List.of(game.getScreenshots().split(", ")));
+//            }
+//            gameForFrontEnd.setDescription(game.getDescription());
+//            if (game.getMovies() != null) {
+//                gameForFrontEnd.setMovies(List.of(game.getMovies().split(", ")));
+//            }
+//            if (game.getDevelopers() != null) {
+//                gameForFrontEnd.setDevelopers(List.of(game.getDevelopers().split(", ")));
+//            }
+//            if (game.getPublishers() != null) {
+//                gameForFrontEnd.setPublishers(List.of(game.getPublishers().split(", ")));
+//            }
+//            if (game.getCategories() != null) {
+//                gameForFrontEnd.setCategories(List.of(game.getCategories().split(", ")));
+//            }
+//            if (game.getGenres() != null) {
+//                gameForFrontEnd.setGenres(List.of(game.getGenres().split(", ")));
+//            }
+//            gamesForFrontEnd.add(gameForFrontEnd);
+//        }
+//        System.out.println("共查询到" + gamesForFrontEnd.size() + "个结果");
+//        for (GameForFrontEnd game : gamesForFrontEnd) {
+//            System.out.println(game);
+//        }
     }
 
     @Test
@@ -164,11 +185,11 @@ class SteamGamesSearcherBackEndApplicationTests {
             outputStream.write(buffer, 0, len);
         }
         System.out.println(outputStream);
-        List<Game> games = elasticSearchService.searchGamesByTags(outputStream.toString());
-        System.out.println("共查询到" + games.size() + "个结果");
-        for (Game game : games) {
-            System.out.println(game);
-        }
+//        List<Game> games = elasticSearchService.searchGamesByTags(outputStream.toString());
+//        System.out.println("共查询到" + games.size() + "个结果");
+//        for (Game game : games) {
+//            System.out.println(game);
+//        }
     }
 
     @Test

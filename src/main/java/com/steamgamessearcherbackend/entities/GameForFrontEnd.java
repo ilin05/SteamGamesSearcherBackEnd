@@ -31,4 +31,5 @@ public class GameForFrontEnd implements Serializable{
     private List<String> publishers;
     private List<String> categories;
     private List<String> genres;
+    private String guidance;
 }
