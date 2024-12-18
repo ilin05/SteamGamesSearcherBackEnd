@@ -56,9 +56,9 @@ public class UserController {
     @PostMapping("/modifyUserName")
     public ApiResult modifyUserName(@RequestBody Map<String,String> modifytUserName) {
         String userId = modifytUserName.get("userId");
-        String password = modifytUserName.get("password");
+        // String password = modifytUserName.get("password");
         String newName = modifytUserName.get("newName");
-        return userService.modifyUserName(Integer.parseInt(userId), password, newName);
+        return userService.modifyUserName(Integer.parseInt(userId), newName);
     }
 
     // 用户登录

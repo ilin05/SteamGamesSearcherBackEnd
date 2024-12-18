@@ -84,13 +84,9 @@ public class UserServiceImpl implements UserService{
 
     @Override
     @Transactional
-    public ApiResult modifyUserName(Integer userId, String password, String newUserName) {
+    public ApiResult modifyUserName(Integer userId, String newUserName) {
         try{
-            int count = userMapper.judgePassword(userId, HashUtils.sha256Hash(password));
-            if(count != 1){
-                return ApiResult.failure("邮箱或密码错误");
-            }
-            count = userMapper.checkUserName(newUserName);
+            int count = userMapper.checkUserName(newUserName);
             if(count > 0){
                 return ApiResult.failure("Username already in use");
             }

@@ -19,7 +19,7 @@ public interface UserService {
     ApiResult modifyPassword(Integer userId, String oldPassword, String newPassword);
 
     // 修改用户名
-    ApiResult modifyUserName(Integer userId, String password, String newUserName);
+    ApiResult modifyUserName(Integer userId, String newUserName);
 
     // 用户登录
     ApiResult userLogin(String email, String password);

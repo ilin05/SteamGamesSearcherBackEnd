@@ -1,89 +1,90 @@
-# Black Myth: Wukong - A Comprehensive Guide
+# Black Gunner Wukong: A Comprehensive Guide
 
-Welcome to the world of **Black Myth: Wukong**, an action RPG deeply rooted in Chinese mythology, inspired by the classic tale *Journey to the West*. This guide will help you navigate through the game's rich story, challenging combat, and vast world of wonders. Whether you're a seasoned RPG player or new to the Souls-like genre, this guide will provide you with essential tips, strategies, and insights to help you become the Destined One.
+Welcome to the world of **Black Gunner Wukong**, a unique and action-packed **Roguelike shooting game** that combines the thrill of third-person shooting (TPS) with the intensity of bullet hell gameplay. In this guide, we’ll cover everything you need to know to master the game, from gameplay mechanics to strategies for defeating bosses and maximizing your builds.
 
 ---
 
 ## **1. Game Overview**
 
-### **Story and Setting**
-- **Mythology-Inspired World**: Black Myth: Wukong is set in a dark fantasy version of ancient China, where you play as the Destined One, a reincarnation of the legendary Monkey King, Sun Wukong. The game draws heavily from Chinese mythology, particularly *Journey to the West*, one of the Four Great Classical Novels of Chinese literature.
-- **The Destined One**: As the protagonist, you are tasked with uncovering the obscured truth behind a glorious legend from the past. Your journey will take you through breathtaking landscapes, epic battles, and heartfelt tales of the characters you encounter.
+### **Storyline**
+In **Black Gunner Wukong**, you play as the legendary Wukong, who infiltrates a U.S. military base to rescue his master, who has been captured by the nefarious Diden. The game features a comically themed background storyline, where all creatures are represented as armed helicopters and supermarket shopping bags, avoiding traditional gender roles.
 
 ### **Gameplay Features**
-- **Action RPG Mechanics**: The game combines fast-paced combat with RPG elements, allowing you to customize your character with spells, weapons, and equipment.
-- **Souls-like Difficulty**: Expect challenging enemies and bosses, with a focus on learning patterns and mastering your skills to overcome them.
-- **Exploration and Discovery**: The game world is filled with hidden secrets, side quests, and lore to uncover.
+- **Roguelike Mechanics**: Each run is procedurally generated, ensuring a fresh experience every time.
+- **TPS + Vampire Survivor Hybrid**: A rare combination of third-person shooting and the addictive gameplay of Vampire Survivor.
+- **6 Big Guns**: Crush your enemies with a variety of powerful weapons.
+- **Nimbus Cloud**: Fly through levels with Wukong’s iconic cloud.
+- **Rich Build Options**: Combine guns and abilities to create unique builds.
+- **Multiple Forms of Wukong**: Play as different versions of Wukong, each with unique active and passive skills.
+- **Bullet Storms**: Experience true bullet hell as you navigate through waves of enemy fire.
+- **Peach Collection**: Collect peaches during battles to purchase enhancements and prepare for the boss showdown.
 
 ---
 
-## **2. Getting Started**
+## **2. Gameplay Mechanics**
 
-### **Digital Deluxe Edition Bonuses**
-If you purchased the **Digital Deluxe Edition**, you’ll have access to exclusive items that can give you a head start in your journey:
-- **Weapon**: Bronzecloud Staff – A powerful staff that enhances your combat abilities.
-- **Equipment**: Folk Opera Set – Includes the Folk Opera Mask, Almsgiving Armor, Leather Bracers, and Buskins. This set not only provides protection but also adds a unique flair to your character.
-- **Curio**: Wind Chimes – A decorative item that may have hidden benefits or lore significance.
-- **Selected Digital Soundtrack**: Access to the game’s music library, allowing you to relive the game’s atmospheric soundtrack.
+### **Controls**
+- **Movement**: Use the WASD keys or left joystick to move Wukong.
+- **Shooting**: Aim with the mouse or right joystick and fire with the left mouse button or trigger.
+- **Nimbus Cloud**: Press the spacebar or a designated button to activate Wukong’s flying ability.
+- **Skills**: Use the number keys or face buttons to activate Wukong’s active skills.
 
-**Tip**: Claim these items early in the game from the **Trailblazer's Gift menu** at the Keeper's Shrine (Respawn Point).
+### **Combat**
+- **Weapons**: You start with a basic weapon, but you can unlock and upgrade 6 different big guns as you progress. Each gun has unique stats and abilities, so experiment to find the best fit for your playstyle.
+- **Bullet Hell**: Dodge and weave through enemy fire while dealing damage. Precision and timing are key to survival.
+- **Builds**: Combine different guns and skills to create powerful synergies. For example, pairing a high-damage weapon with a skill that increases attack speed can create a devastating combo.
 
----
-
-## **3. Combat System**
-
-### **Mastering Combat**
-- **Staff Techniques**: As the Destined One, you’ll primarily use a staff in combat. Practice different staff techniques to chain combos and deal devastating damage.
-- **Spells and Abilities**: Combine spells, transformations, and magic vessels to create unique combat strategies. Some spells may counter specific enemies, while others can amplify your attacks.
-- **Parrying and Dodging**: Timing your dodges and parries is crucial in Souls-like combat. Learn enemy attack patterns to avoid taking damage.
-
-### **Weapons and Equipment**
-- **Weapon Variety**: Experiment with different weapons to find one that suits your playstyle. Each weapon has unique movesets and abilities.
-- **Equipment Sets**: The Folk Opera Set is a great starting point, but as you progress, you’ll find more equipment that can enhance your stats and abilities.
-
-### **Enemies and Bosses**
-- **Diverse Adversaries**: The game features a wide range of enemies, each with their own strengths and weaknesses. Study their behavior to find the best way to defeat them.
-- **Boss Battles**: Bosses are the highlight of the game, offering intense and memorable encounters. Be prepared to die and learn from your mistakes.
+### **Peach Collection**
+- **Peaches**: Collect peaches during each round to purchase enhancements. Peaches can be found by defeating enemies or exploring the map.
+- **Enhancements**: Use peaches to upgrade your weapons, skills, or Wukong’s stats. Focus on upgrading the aspects of your build that you find most effective.
 
 ---
 
-## **4. Exploration and World Design**
+## **3. Builds and Strategies**
 
-### **Breathtaking Landscapes**
-- **Mythological Locations**: The game world is inspired by ancient Chinese mythology, featuring iconic locations from *Journey to the West*. Expect to explore mountains, rivers, temples, and more.
-- **Hidden Secrets**: The world is filled with secrets, including hidden items, lore, and side quests. Take your time to explore every nook and cranny.
+### **Weapon Combinations**
+- **High Damage + Area of Effect (AoE)**: Pair a high-damage weapon with an AoE skill to clear groups of enemies quickly.
+- **Rapid Fire + Mobility**: Use a rapid-fire weapon with a skill that increases movement speed to stay agile and deal constant damage.
+- **Sniper + Precision**: A sniper weapon paired with a skill that increases critical hit chance can be deadly against bosses.
 
-### **Side Quests and Lore**
-- **Heartfelt Tales**: Many characters you encounter have their own stories and motivations. Engage with them to uncover the deeper narrative of the game.
-- **Lore and Mythology**: The game is rich in lore, with references to Chinese mythology and history. Pay attention to environmental storytelling and dialogue to fully immerse yourself in the world.
+### **Wukong Forms**
+- **Base Form**: The starting form with balanced stats and abilities.
+- **Power Form**: Increases damage output but reduces movement speed.
+- **Agile Form**: Increases movement speed and dodge chance but reduces damage.
+- **Support Form**: Enhances team abilities and provides buffs to nearby allies (if multiplayer is added in the future).
+
+### **Passive Skills**
+- **Damage Boost**: Increases overall damage output.
+- **Health Regen**: Slowly regenerates health over time.
+- **Critical Hit**: Increases the chance of dealing critical damage.
+- **Movement Speed**: Increases Wukong’s speed, making it easier to dodge enemy fire.
 
 ---
 
-## **5. Tips for Success**
+## **4. Boss Strategies**
 
-### **1. Learn Enemy Patterns**
-- Each enemy has a unique attack pattern. Take the time to observe and learn these patterns to avoid taking unnecessary damage.
+### **General Tips**
+- **Study Patterns**: Each boss has unique attack patterns. Take note of these and learn when to dodge.
+- **Focus Fire**: Use your most powerful weapon to deal consistent damage to the boss.
+- **Stay Mobile**: Boss fights often involve a lot of movement. Use Wukong’s Nimbus Cloud to stay agile and avoid attacks.
 
-### **2. Experiment with Spells and Abilities**
-- Don’t be afraid to experiment with different spells and abilities. Some combinations may unlock powerful synergies that can turn the tide of battle.
+### **Specific Bosses**
+- **Helicopter Boss**: This boss fires rapid-fire bullets in a spiral pattern. Dodge by moving in a circular pattern around the boss.
+- **Shopping Bag Boss**: This boss spawns smaller enemies. Focus on clearing the smaller enemies first to reduce the pressure.
 
-### **3. Upgrade Your Gear**
-- Regularly upgrade your weapons and equipment to keep up with the increasing difficulty of the game. Look for crafting materials and blacksmiths in the world.
+---
 
-### **4. Explore Thoroughly**
-- The game rewards exploration. Look for hidden paths, secret areas, and collectibles that can enhance your character.
+## **5. Tips and Tricks**
 
-### **5. Manage Your Stamina**
-- Stamina is crucial for both attacking and dodging. Avoid spamming attacks and manage your stamina wisely to stay alive in tough battles.
+- **Experiment with Builds**: Don’t be afraid to try different weapon and skill combinations. Some builds may surprise you with their effectiveness.
+- **Upgrade Wisely**: Prioritize upgrades that complement your playstyle. If you prefer high damage, focus on upgrading your weapons. If you prefer survival, invest in health regen and movement speed.
+- **Practice Dodging**: Bullet hell games require precise dodging. Practice your reflexes and timing to improve your survival rate.
+- **Use the Nimbus Cloud**: Flying can help you avoid ground-based attacks and reach higher areas of the map.
 
 ---
 
 ## **6. Conclusion**
 
-**Black Myth: Wukong** is a masterpiece of action RPG design, offering a rich story, challenging combat, and a beautifully crafted world inspired by Chinese mythology. Whether you’re a fan of *Journey to the West* or new to the genre, this game offers an unforgettable experience.
+**Black Gunner Wukong** is a thrilling and unique take on the Roguelike genre, offering a mix of third-person shooting, bullet hell, and rich build options. By mastering the game’s mechanics, experimenting with different builds, and learning boss patterns, you’ll be well on your way to rescuing Wukong’s master and defeating Diden.
 
-As the Destined One, your journey will be filled with trials, triumphs, and discoveries. Embrace the challenge, master your skills, and uncover the truth behind the legend. Good luck, and may the spirit of the Monkey King guide you!
-
----
-
-**Enjoy your adventure in the world of Black Myth: Wukong!**
+Good luck, and may your bullets be plentiful and your dodges precise!
